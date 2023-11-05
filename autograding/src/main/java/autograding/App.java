@@ -15,7 +15,7 @@ public class App {
         // Specify the directory where you want to extract the submissions.
         String javaExtractionDirectory = "extraction_directory";
 
-        String specFilePath = "AutoGradingApp\\ProjectTestData.zip";
+        String specFilePath = "autograding\\src\\main\\java\\autograding\\ProjectTestData.zip";
         String specExtractionDirectory = "extraction_directory";
         // Call the method to process the submissions.
         specReader.readFile(specFilePath, specExtractionDirectory);

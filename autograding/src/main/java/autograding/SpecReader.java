@@ -33,11 +33,14 @@ public class SpecReader implements FileReader {
             zipDataStream = new ZipInputStream(zippedSpecStream);
             fileScanner = new Scanner(zipDataStream);
             while ((entry = zipDataStream.getNextEntry()) != null) {
-                while (fileScanner.hasNextLine()) {
-                    String data = fileScanner.nextLine();
-                    System.out.println(data);
-                }
+                parser.parse(zipDataStream, handler, meta, contextParser);
+                // while (fileScanner.hasNextLine()) {
+                // String data = fileScanner.nextLine();
+                // System.out.println(data);
+                // }
             }
+            String str = handler.toString();
+            System.out.println(str);
             zipDataStream.close();
             /*
              * 
