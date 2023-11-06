@@ -26,7 +26,7 @@ public class SpecReader implements FileReader {
     String error = "Error reading file";
 
     @Override
-    public String readFile(String specFilePath, String specExtractionDirectory) {
+    public void readFile(String specFilePath, String specExtractionDirectory) {
         try {
             zippedSpecStream = new FileInputStream(specFilePath);
             zipFile = new ZipFile(specFilePath);
@@ -44,7 +44,7 @@ public class SpecReader implements FileReader {
             System.out.println(str);
             zipDataStream.close();
 
-            return str;
+            // return str;
 
             /*
              * 
@@ -59,7 +59,7 @@ public class SpecReader implements FileReader {
              */
         } catch (Exception e) {
             // TODO: handle exception
-            return error;
+            // return error;
         }
 
     }
