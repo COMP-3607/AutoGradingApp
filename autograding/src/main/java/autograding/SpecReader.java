@@ -23,9 +23,10 @@ public class SpecReader implements FileReader {
     Metadata meta = new Metadata();
     ParseContext contextParser = new ParseContext();
     PDFParser parser = new PDFParser();
+    String error = "Error reading file";
 
     @Override
-    public void readFile(String specFilePath, String specExtractionDirectory) {
+    public String readFile(String specFilePath, String specExtractionDirectory) {
         try {
             zippedSpecStream = new FileInputStream(specFilePath);
             zipFile = new ZipFile(specFilePath);
@@ -42,6 +43,9 @@ public class SpecReader implements FileReader {
             String str = handler.toString();
             System.out.println(str);
             zipDataStream.close();
+
+            return str;
+
             /*
              * 
              * fileScanner = new Scanner(specFile);
@@ -55,6 +59,7 @@ public class SpecReader implements FileReader {
              */
         } catch (Exception e) {
             // TODO: handle exception
+            return error;
         }
 
     }
