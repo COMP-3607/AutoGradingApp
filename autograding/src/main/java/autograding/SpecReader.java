@@ -37,21 +37,21 @@ public class SpecReader implements FileReader {
         try {
             zippedSpecStream = new FileInputStream(specFilePath);
             // folderSpecStream = new FileInputStream(specFolder);
-            System.out.println("HEREE");
+
             zipFile = new ZipFile(specFilePath);
             // specFile = new File("ProjectTestData\\COMP2603_Assignment_1_2023.pdf");
             zipDataStream = new ZipInputStream(zippedSpecStream);
-            fileScanner = new Scanner(zipDataStream);
+            // fileScanner = new Scanner(zipDataStream);
             while ((entry = zipDataStream.getNextEntry()) != null) {
-                // System.out.println("HEREE" + entry.getName());
+                System.out.println("HEREE" + entry.getName());
                 // stream = zipFile.getInputStream(entry);
                 file = new File(entry.getName());
 
-                System.out.println(file.getName());
+                System.out.println(file.canRead());
                 FileInputStream stream = new FileInputStream(file);
-                // bytes = new byte[(int) file.length()];
-                // stream.read(bytes);
-                // System.out.println("data" + stream.toString());
+
+                System.out.println("HEREE");
+
                 parser.parse(stream, handler, meta, contextParser);
 
                 // while (fileScanner.hasNextLine()) {
