@@ -22,7 +22,7 @@ public class SubmissionReader implements FileReader {
      * }
      */
 
-    public void readFile(String zipFilePath, String extractionDirectory) {
+    public void readFile(String zipFilePath, String specFolder, String extractionDirectory) {
         try {
             // Create a directory for extracting submissions.
             File extractionDir = new File(extractionDirectory);

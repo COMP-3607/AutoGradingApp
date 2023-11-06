@@ -7,34 +7,53 @@ import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
+
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.sax.BodyContentHandler;
 import org.apache.tika.parser.pdf.PDFParser;
 import org.apache.tika.parser.ParseContext;
 
 public class SpecReader implements FileReader {
-    FileInputStream zippedSpecStream = null;
-    File specFile;
-    Scanner fileScanner;
-    ZipInputStream zipDataStream;
-    ZipFile zipFile;
-    ZipEntry entry;
-    BodyContentHandler handler = new BodyContentHandler();
-    Metadata meta = new Metadata();
-    ParseContext contextParser = new ParseContext();
-    PDFParser parser = new PDFParser();
-    String error = "Error reading file";
+    private FileInputStream zippedSpecStream = null;
+    private File specFile;
+    private Scanner fileScanner;
+    private ZipInputStream zipDataStream;
+    private ZipFile zipFile;
+    private ZipEntry entry;
+    private BodyContentHandler handler = new BodyContentHandler();
+    private Metadata meta = new Metadata();
+    private ParseContext contextParser = new ParseContext();
+    private PDFParser parser = new PDFParser();
+    private String error = "Error reading file";
+    private FileInputStream folderSpecStream;
+    private File file;
+    // private FileInputStream stream;
+    int ch;
+    byte bytes[];
 
     @Override
-    public void readFile(String specFilePath, String specExtractionDirectory) {
+    public void readFile(String specFilePath, String specFolder, String specExtractionDirectory) {
         try {
             zippedSpecStream = new FileInputStream(specFilePath);
+            // folderSpecStream = new FileInputStream(specFolder);
+            System.out.println("HEREE");
             zipFile = new ZipFile(specFilePath);
             // specFile = new File("ProjectTestData\\COMP2603_Assignment_1_2023.pdf");
             zipDataStream = new ZipInputStream(zippedSpecStream);
             fileScanner = new Scanner(zipDataStream);
             while ((entry = zipDataStream.getNextEntry()) != null) {
-                parser.parse(zipDataStream, handler, meta, contextParser);
+                // System.out.println("HEREE" + entry.getName());
+                // stream = zipFile.getInputStream(entry);
+                file = new File(entry.getName());
+
+                System.out.println(file.getName());
+                FileInputStream stream = new FileInputStream(file);
+                // bytes = new byte[(int) file.length()];
+                // stream.read(bytes);
+                // System.out.println("data" + stream.toString());
+                parser.parse(stream, handler, meta, contextParser);
+
                 // while (fileScanner.hasNextLine()) {
                 // String data = fileScanner.nextLine();
                 // System.out.println(data);
