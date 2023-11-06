@@ -28,31 +28,37 @@ public class SpecReader implements FileReader {
     private String error = "Error reading file";
     private FileInputStream folderSpecStream;
     private File file;
+    private File folder;
     // private FileInputStream stream;
     int ch;
     byte bytes[];
+    FileInputStream stream;
 
     @Override
     public void readFile(String specFilePath, String specFolder, String specExtractionDirectory) {
         try {
             zippedSpecStream = new FileInputStream(specFilePath);
             // folderSpecStream = new FileInputStream(specFolder);
-
+            // folder = new File(specFolder);
             zipFile = new ZipFile(specFilePath);
             // specFile = new File("ProjectTestData\\COMP2603_Assignment_1_2023.pdf");
             zipDataStream = new ZipInputStream(zippedSpecStream);
+            // stream= new FileInputStream(folderSpecStream);
             // fileScanner = new Scanner(zipDataStream);
             while ((entry = zipDataStream.getNextEntry()) != null) {
-                System.out.println("HEREE" + entry.getName());
-                // stream = zipFile.getInputStream(entry);
-                file = new File(entry.getName());
+                if (!entry.isDirectory()) {
+                    System.out.println("HEREE" + entry.getName());
+                    // stream = zipFile.getInputStream(entry);
+                    file = new File(specFolder, entry.getName());
+                    // file.getParentFile().mkdirs();
+                    // System.out.println(file.exists());
+                    System.out.println(file.canRead());
+                    stream = new FileInputStream(file);
 
-                System.out.println(file.canRead());
-                FileInputStream stream = new FileInputStream(file);
+                    System.out.println("HEREE123");
 
-                System.out.println("HEREE");
-
-                parser.parse(stream, handler, meta, contextParser);
+                    parser.parse(stream, handler, meta, contextParser);
+                }
 
                 // while (fileScanner.hasNextLine()) {
                 // String data = fileScanner.nextLine();
