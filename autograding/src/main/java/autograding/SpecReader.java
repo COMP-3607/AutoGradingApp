@@ -11,6 +11,9 @@ import java.io.InputStream;
 
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.sax.BodyContentHandler;
+
+import com.coremedia.iso.boxes.CompositionTimeToSample.Entry;
+
 import org.apache.tika.parser.pdf.PDFParser;
 import org.apache.tika.parser.ParseContext;
 
@@ -21,6 +24,7 @@ public class SpecReader implements FileReader {
     private ZipInputStream zipDataStream;
     private ZipFile zipFile;
     private ZipEntry entry;
+    private Entry inside;
     private BodyContentHandler handler = new BodyContentHandler();
     private Metadata meta = new Metadata();
     private ParseContext contextParser = new ParseContext();
@@ -38,8 +42,9 @@ public class SpecReader implements FileReader {
     public void readFile(String specFilePath, String specFolder, String specExtractionDirectory) {
         try {
             zippedSpecStream = new FileInputStream(specFilePath);
-            // folderSpecStream = new FileInputStream(specFolder);
+
             // folder = new File(specFolder);
+            System.out.println("HEREE33333");
             zipFile = new ZipFile(specFilePath);
             // specFile = new File("ProjectTestData\\COMP2603_Assignment_1_2023.pdf");
             zipDataStream = new ZipInputStream(zippedSpecStream);
@@ -49,15 +54,17 @@ public class SpecReader implements FileReader {
                 if (!entry.isDirectory()) {
                     System.out.println("HEREE" + entry.getName());
                     // stream = zipFile.getInputStream(entry);
+
                     file = new File(specFolder, entry.getName());
                     // file.getParentFile().mkdirs();
                     // System.out.println(file.exists());
-                    System.out.println(file.canRead());
-                    stream = new FileInputStream(file);
+                    System.out.println(file.exists());
+                    folderSpecStream = new FileInputStream(file);
+                    // stream = new FileInputStream(file);
 
                     System.out.println("HEREE123");
 
-                    parser.parse(stream, handler, meta, contextParser);
+                    parser.parse(folderSpecStream, handler, meta, contextParser);
                 }
 
                 // while (fileScanner.hasNextLine()) {
