@@ -4,6 +4,7 @@ public class AutoGrader {
     private SpecReader specReader;
     private SubmissionReader javaReader;
     private double score;
+    private String specText;
 
     public AutoGrader() {
         specReader = new SpecReader();
@@ -13,7 +14,7 @@ public class AutoGrader {
 
     public double grader(String specFilePath, String specFolder, String specExtractionDirectory, String javaZipFilePath,
             String javaExtractionDirectory) {
-        specReader.readFile(specFilePath, specFolder, specExtractionDirectory);
+        specText = specReader.readFile(specFilePath, specFolder, specExtractionDirectory);
         return score;
     }
 }

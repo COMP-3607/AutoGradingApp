@@ -19,7 +19,7 @@ public class App {
 
         String specFilePath = "autograding\\src\\main\\java\\autograding\\TestData.zip";
         String specExtractionDirectory = "extraction_directory";
-        String specFolder = "autograding\\src\\main\\java\\autograding\\TestData.zip\\TestData";
+        String specFolder = "autograding\\src\\main\\java\\autograding\\TestData.zip";
         score = autoGrader.grader(specFilePath, specFolder, specExtractionDirectory, javaZipFilePath,
                 javaExtractionDirectory);
         // Call the method to process the submissions.

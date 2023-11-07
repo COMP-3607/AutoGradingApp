@@ -8,6 +8,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 public class SubmissionReader implements FileReader {
+    String str;
     /*
      * 
      * public static void main(String[] args) {
@@ -22,7 +23,7 @@ public class SubmissionReader implements FileReader {
      * }
      */
 
-    public void readFile(String zipFilePath, String specFolder, String extractionDirectory) {
+    public String readFile(String zipFilePath, String specFolder, String extractionDirectory) {
         try {
             // Create a directory for extracting submissions.
             File extractionDir = new File(extractionDirectory);
@@ -63,5 +64,6 @@ public class SubmissionReader implements FileReader {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return str;
     }
 }

@@ -1,5 +1,6 @@
 package autograding;
 
+import java.util.Enumeration;
 import java.util.Scanner;
 //import java.util.zip;
 import java.util.zip.ZipEntry;
@@ -33,13 +34,15 @@ public class SpecReader implements FileReader {
     private FileInputStream folderSpecStream;
     private File file;
     private File folder;
+    private String fileName = "COMP2603_Assignment_1_2023.pdf";
+    String str;
     // private FileInputStream stream;
     int ch;
     byte bytes[];
-    FileInputStream stream;
+    InputStream stream;
 
     @Override
-    public void readFile(String specFilePath, String specFolder, String specExtractionDirectory) {
+    public String readFile(String specFilePath, String specFolder, String specExtractionDirectory) {
         try {
             zippedSpecStream = new FileInputStream(specFilePath);
 
@@ -48,37 +51,60 @@ public class SpecReader implements FileReader {
             zipFile = new ZipFile(specFilePath);
             // specFile = new File("ProjectTestData\\COMP2603_Assignment_1_2023.pdf");
             zipDataStream = new ZipInputStream(zippedSpecStream);
-            // stream= new FileInputStream(folderSpecStream);
-            // fileScanner = new Scanner(zipDataStream);
-            while ((entry = zipDataStream.getNextEntry()) != null) {
-                if (!entry.isDirectory()) {
-                    // folderSpecStream = new FileInputStream(entry.getName());
-                    // stream = new FileInputStream(entry.getName());
+            Enumeration<? extends ZipEntry> entries = zipFile.entries();
 
-                    System.out.println("heree" + entry.getName());
-                    // stream = zipFile.getInputStream(entry);
-
-                    file = new File(entry.getName());
-                    // file.getParentFile().mkdirs();
-
-                    System.out.println(file.exists());
-                    // folderSpecStream = new FileInputStream(file);
-                    stream = new FileInputStream(file);
-                    System.out.println("HEREE123");
-
+            while (entries.hasMoreElements()) {
+                entry = entries.nextElement();
+                stream = zipFile.getInputStream(entry);
+                if (entry.getName().startsWith("COMP")) {
                     parser.parse(stream, handler, meta, contextParser);
                 }
-
-                // while (fileScanner.hasNextLine()) {
-                // String data = fileScanner.nextLine();
-                // System.out.println(data);
-                // }
             }
-            String str = handler.toString();
+            str = handler.toString();
             System.out.println("DATA IS " + str);
-            zipDataStream.close();
-
-            // return str;
+            stream.close();
+            return str;
+            // zipDataStream.close();
+            // stream= new FileInputStream(folderSpecStream);
+            // fileScanner = new Scanner(zipDataStream);
+            /*
+             * 
+             * entry = zipDataStream.getNextEntry();
+             * while (entry != null) {
+             * // System.out.println(entry.getName());
+             * if (!entry.isDirectory()) {
+             * // folderSpecStream = new FileInputStream(entry.getName());
+             * // stream = new FileInputStream(entry.getName());
+             * 
+             * // System.out.println(entry.getName());
+             * if (entry.getName().startsWith("COMP")) {
+             * String x = "\\" + entry.getName();
+             * System.out.println("\\TestData.zip" + x);
+             * file = new File(specFolder+x);
+             * // file.getParentFile().mkdirs();
+             * System.out.println(file.canRead());
+             * System.out.println(file.exists());
+             * stream = new FileInputStream(file);
+             * 
+             * System.out.println(stream.toString());
+             * 
+             * parser.parse(stream, handler, meta, contextParser);
+             * }
+             * 
+             * }
+             * 
+             * // while (fileScanner.hasNextLine()) {
+             * // String data = fileScanner.nextLine();
+             * // System.out.println(data);
+             * // }
+             * entry = zipDataStream.getNextEntry();
+             * }
+             * String str = handler.toString();
+             * System.out.println("DATA IS " + str);
+             * zipDataStream.close();
+             * 
+             * // return str;
+             */
 
             /*
              * 
@@ -96,6 +122,7 @@ public class SpecReader implements FileReader {
             // return error;
         }
 
+        return str;
     }
 
 }
