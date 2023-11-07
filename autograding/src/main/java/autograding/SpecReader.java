@@ -52,19 +52,21 @@ public class SpecReader implements FileReader {
             // fileScanner = new Scanner(zipDataStream);
             while ((entry = zipDataStream.getNextEntry()) != null) {
                 if (!entry.isDirectory()) {
-                    System.out.println("HEREE" + entry.getName());
+                    // folderSpecStream = new FileInputStream(entry.getName());
+                    // stream = new FileInputStream(entry.getName());
+
+                    System.out.println("heree" + entry.getName());
                     // stream = zipFile.getInputStream(entry);
 
-                    file = new File(specFolder, entry.getName());
+                    file = new File(entry.getName());
                     // file.getParentFile().mkdirs();
-                    // System.out.println(file.exists());
-                    System.out.println(file.exists());
-                    folderSpecStream = new FileInputStream(file);
-                    // stream = new FileInputStream(file);
 
+                    System.out.println(file.exists());
+                    // folderSpecStream = new FileInputStream(file);
+                    stream = new FileInputStream(file);
                     System.out.println("HEREE123");
 
-                    parser.parse(folderSpecStream, handler, meta, contextParser);
+                    parser.parse(stream, handler, meta, contextParser);
                 }
 
                 // while (fileScanner.hasNextLine()) {
@@ -73,7 +75,7 @@ public class SpecReader implements FileReader {
                 // }
             }
             String str = handler.toString();
-            System.out.println(str);
+            System.out.println("DATA IS " + str);
             zipDataStream.close();
 
             // return str;
