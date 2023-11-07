@@ -1,9 +1,6 @@
 package autograding;
 
-/**
- * Hello world!
- *
- */
+
 public class App {
     public static SubmissionReader javaReader = new SubmissionReader();
     public static SpecReader specReader = new SpecReader();
