@@ -8,6 +8,7 @@ public class TestSpecCreator extends TestObjectCreator {
     private String className;
     private String temp = "";
     private char[] x;
+    private boolean found = false;
 
     public TestSpecCreator() {
     }
@@ -22,12 +23,13 @@ public class TestSpecCreator extends TestObjectCreator {
                 // if (specText.charAt(count) == 'C') {
                 System.out.println("HEREE");
                 num = count;
-                while (num != 0) {
+                while (num != 0 || found == true) {
                     if (specText.charAt(num) != ' ') {
                         while (specText.charAt(num) != ' ') {
                             temp = temp.concat(Character.toString(specText.charAt(num)));
                             num--;
                         }
+                        found = true;
                         for (int i = 0; i < temp.length(); i++) {
                             className = temp.charAt(i) + className;
                         }
@@ -36,6 +38,7 @@ public class TestSpecCreator extends TestObjectCreator {
                     num--;
                 }
             }
+            found = false;
             count = count + 1;
         }
 
