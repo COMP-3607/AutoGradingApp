@@ -13,7 +13,7 @@ public class TestObjectCreator {
         this.specText = specText;
     }
 
-    public TestObject createTestObject() {
+    public TestObject createTestObject(String specText) {
 
         return null;
     }

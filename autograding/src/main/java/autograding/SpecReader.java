@@ -61,7 +61,7 @@ public class SpecReader implements FileReader {
                 }
             }
             str = handler.toString();
-            System.out.println("DATA IS " + str);
+            // System.out.println("DATA IS " + str);
             stream.close();
             return str;
             // zipDataStream.close();
