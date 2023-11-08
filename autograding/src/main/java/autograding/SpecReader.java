@@ -47,7 +47,7 @@ public class SpecReader implements FileReader {
             zippedSpecStream = new FileInputStream(specFilePath);
 
             // folder = new File(specFolder);
-            System.out.println("HEREE33333");
+            // System.out.println("HEREE33333");
             zipFile = new ZipFile(specFilePath);
             // specFile = new File("ProjectTestData\\COMP2603_Assignment_1_2023.pdf");
             zipDataStream = new ZipInputStream(zippedSpecStream);
@@ -61,7 +61,6 @@ public class SpecReader implements FileReader {
                 }
             }
             str = handler.toString();
-            // System.out.println("DATA IS " + str);
             stream.close();
             return str;
             // zipDataStream.close();

@@ -17,7 +17,6 @@ public class AutoGrader {
     public double grader(String specFilePath, String specFolder, String specExtractionDirectory, String javaZipFilePath,
             String javaExtractionDirectory) {
         specText = specReader.readFile(specFilePath, specFolder, specExtractionDirectory);
-        System.out.println("DATA IS " + specText);
 
         specMaker.createTestObject(specText);
         return score;
