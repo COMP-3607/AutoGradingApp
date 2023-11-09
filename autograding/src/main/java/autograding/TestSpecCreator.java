@@ -52,24 +52,27 @@ public class TestSpecCreator extends TestObjectCreator {
                         System.out.println("HEREEEEEEE");
                         num = count - 1;
                         if (num != -1) {
-                            num = num - 1;
-                            while (num != -1) {
-                                int y = num + 1;
-                                // if (line.charAt(y) == ' ') {
-                                if (line.charAt(num) != ' ') {
-                                    temp = temp.concat(Character.toString(line.charAt(num)));
-                                } else {
-                                    num = 0;
+                            if (line.charAt(num) == ' ') {
+
+                                num = num - 1;
+                                while (num != -1) {
+                                    int y = num + 1;
+                                    // if (line.charAt(y) == ' ') {
+                                    if (line.charAt(num) != ' ') {
+                                        temp = temp.concat(Character.toString(line.charAt(num)));
+                                    } else {
+                                        num = 0;
+                                    }
+                                    num--;
+                                    // }
                                 }
-                                num--;
-                                // }
+                                for (int i = 0; i < temp.length(); i++) {
+                                    className = temp.charAt(i) + className;
+                                }
+                                System.out.println("Class Name: " + className);
+                                temp = "";
+                                className = "";
                             }
-                            for (int i = 0; i < temp.length(); i++) {
-                                className = temp.charAt(i) + className;
-                            }
-                            System.out.println("Class Name: " + className);
-                            temp = "";
-                            className = "";
                         }
                     }
                     count++;
