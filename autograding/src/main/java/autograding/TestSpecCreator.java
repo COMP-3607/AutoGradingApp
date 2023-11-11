@@ -20,6 +20,8 @@ public class TestSpecCreator extends TestObjectCreator {
     private ArrayList<String> list;
     private String temp2 = "";
     String line;
+    int attributeLen;
+    String type = "";
     FileWriter writer;
     File spec;
     Scanner scanner;
@@ -83,18 +85,34 @@ public class TestSpecCreator extends TestObjectCreator {
             if ((line.charAt(count) == 'P' && line.charAt(x) == 'r' && line.charAt(xx) == 'i')
                     || (line.charAt(count) == 'P' && line.charAt(x) == 'u' && line.charAt(xx) == 'b')) {
                 int start = 0;
-                System.out.println(line);
+                // System.out.println(line);
                 temp2 = "";
                 while (line.charAt(start) != ' ') {
                     temp2 = temp2.concat(Character.toString(line.charAt(start)));
                     start++;
 
                 }
-                // System.out.println(temp2);
-                // varName = "";
                 return temp2;
             }
         }
+        return null;
+    }
+
+    public String findAttributeType(String line, int index) {
+        // index++;
+        // if (index < line.length()) {
+
+        if (line.charAt(index) == ' ') {
+            // System.out.println("HEYYY");
+            index++;
+            type = "";
+            while (line.charAt(index) != ' ') {
+                type = type.concat(Character.toString(line.charAt(index)));
+                index++;
+            }
+            return type;
+        }
+        // }
         return null;
     }
 
@@ -117,8 +135,14 @@ public class TestSpecCreator extends TestObjectCreator {
 
                     varName = findAttributeName(line, count);
                     if (varName != null) {
-                        // System.out.println("Attribute is: " + varName);
+                        System.out.println("Attribute is: " + varName);
+                        attributeLen = varName.length();
+                        type = findAttributeType(line, attributeLen);
+                        if (type != null) {
+                            System.out.println("Attribute type is: " + type);
+                        }
                     }
+
                     count++;
                 }
             }
