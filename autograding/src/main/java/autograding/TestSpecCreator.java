@@ -13,10 +13,12 @@ public class TestSpecCreator extends TestObjectCreator {
     private int num;
     private int len;
     private String className = "";
+    private String varName = "";
     private String temp = "";
     private char[] x;
     private boolean found = false;
     private ArrayList<String> list;
+    private String temp2 = "";
     String line;
     FileWriter writer;
     File spec;
@@ -44,6 +46,7 @@ public class TestSpecCreator extends TestObjectCreator {
 
     @Override
     public TestObject createTestObject(String documentName, File document, String specText) {
+
         writeToFile(document = createTxtFile(documentName), specText);
 
         try {
@@ -60,7 +63,6 @@ public class TestSpecCreator extends TestObjectCreator {
                         num = count - 1;
                         if (num != -1) {
                             if (line.charAt(num) == ' ') {
-
                                 num = num - 1;
                                 while (num != -1) {
                                     int y = num + 1;
@@ -82,45 +84,37 @@ public class TestSpecCreator extends TestObjectCreator {
                             }
                         }
                     }
+                    int xx = x + 1;
+                    if (xx < len || x < len) {
+                        if ((line.charAt(count) == 'P' && line.charAt(x) == 'r' && line.charAt(xx) == 'i')
+                                || (line.charAt(count) == 'P' && line.charAt(x) == 'u' && line.charAt(xx) == 'b')) {
+                            int start = 0;
+                            // System.out.println(line);
+                            while (line.charAt(start) != ' ') {
+                                temp2 = temp2.concat(Character.toString(line.charAt(start)));
+                                start++;
+
+                            }
+                            System.out.println(temp2);
+                            // for (int h = 0; h < temp2.length(); h++) {
+                            // varName = temp2.charAt(h) + varName;
+                            // }
+                            // System.out.println(varName);
+                            temp2 = "";
+                            varName = "";
+
+                        }
+                    }
                     count++;
                 }
-
             }
             scanner.close();
+
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        /*
-         * while (count != len) {
-         * // System.out.print(specText.charAt(count));
-         * // if (specText.charAt(count) == 'C' && specText.charAt(count = count + 1) ==
-         * // 'l') {
-         * if (specText.charAt(count) == 'C') {
-         * 
-         * System.out.println("HEREE");
-         * num = count;
-         * while (num != 0 || found == true) {
-         * if (specText.charAt(num) != ' ') {
-         * while (specText.charAt(num) != ' ') {
-         * temp = temp.concat(Character.toString(specText.charAt(num)));
-         * num--;
-         * }
-         * found = true;
-         * for (int i = 0; i < temp.length(); i++) {
-         * className = temp.charAt(i) + className;
-         * }
-         * System.out.println("Class Name: " + className);
-         * }
-         * num--;
-         * }
-         * }
-         * found = false;
-         * count = count + 1;
-         * }
-         */
-
         return null;
-    }
 
+    }
 }
