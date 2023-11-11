@@ -1,11 +1,15 @@
 package autograding;
 
+import java.io.File;
+
 public class AutoGrader {
     private SpecReader specReader;
     private SubmissionReader javaReader;
     private double score;
     private String specText;
     private TestSpecCreator specMaker;
+    String specDocumentName = "specDoc.txt";
+    File document;
 
     public AutoGrader() {
         specReader = new SpecReader();
@@ -18,7 +22,7 @@ public class AutoGrader {
             String javaExtractionDirectory) {
         specText = specReader.readFile(specFilePath, specFolder, specExtractionDirectory);
 
-        specMaker.createTestObject(specText);
+        specMaker.createTestObject(specDocumentName, document, specText);
         return score;
     }
 }

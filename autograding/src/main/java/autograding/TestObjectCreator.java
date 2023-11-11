@@ -1,5 +1,6 @@
 package autograding;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class TestObjectCreator {
@@ -17,7 +18,7 @@ public class TestObjectCreator {
         this.specText = specText;
     }
 
-    public TestObject createTestObject(String specText) {
+    public TestObject createTestObject(String documentName, File document, String specText) {
 
         return null;
     }

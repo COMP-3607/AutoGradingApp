@@ -21,26 +21,33 @@ public class TestSpecCreator extends TestObjectCreator {
     FileWriter writer;
     File spec;
     Scanner scanner;
+    String documentName = "specDoc.txt";
 
     public TestSpecCreator() {
     }
 
-    @Override
-    public TestObject createTestObject(String specText) {
-        // ch=specText.charAt(0);
-        // list = new ArrayList<String>();
-        spec = new File("specDoc.txt");
+    public File createTxtFile(String documentName) {
+        spec = new File(documentName);
+        return spec;
+    }
+
+    public void writeToFile(File document, String specText) {
         try {
-            writer = new FileWriter(spec.getName());
+            writer = new FileWriter(document.getName());
             writer.write(specText);
             writer.close();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        } catch (Exception e) {
+            // TODO: handle exception
+            System.out.println("Error: " + e.getMessage());
         }
+    }
+
+    @Override
+    public TestObject createTestObject(String documentName, File document, String specText) {
+        writeToFile(document = createTxtFile(documentName), specText);
 
         try {
-            scanner = new Scanner(spec);
+            scanner = new Scanner(document);
             while (scanner.hasNextLine()) {
                 count = 0;
                 line = scanner.nextLine();
