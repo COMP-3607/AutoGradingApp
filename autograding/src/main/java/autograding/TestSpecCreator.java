@@ -44,6 +44,60 @@ public class TestSpecCreator extends TestObjectCreator {
         }
     }
 
+    public String findClassName(String line, int count) {
+        int x = count + 1;
+        if (line.charAt(count) == 'C' && line.charAt(x) == 'l') {
+            // System.out.println("HEREEEEEEE");
+            num = count - 1;
+            if (num != -1) {
+                if (line.charAt(num) == ' ') {
+                    num = num - 1;
+                    temp = "";
+                    while (num != -1) {
+                        int y = num + 1;
+                        if (line.charAt(num) != ' ') {
+                            temp = temp.concat(Character.toString(line.charAt(num)));
+                        } else {
+                            num = 0;
+                        }
+                        num--;
+                    }
+
+                    className = "";
+                    for (int i = 0; i < temp.length(); i++) {
+                        className = temp.charAt(i) + className;
+                    }
+                    // System.out.println("Class Name: " + className);
+                    return className;
+                }
+            }
+
+        }
+        return null;
+    }
+
+    public String findAttributeName(String line, int count) {
+        int x = count + 1;
+        int xx = x + 1;
+        if (xx < len || x < len) {
+            if ((line.charAt(count) == 'P' && line.charAt(x) == 'r' && line.charAt(xx) == 'i')
+                    || (line.charAt(count) == 'P' && line.charAt(x) == 'u' && line.charAt(xx) == 'b')) {
+                int start = 0;
+                System.out.println(line);
+                temp2 = "";
+                while (line.charAt(start) != ' ') {
+                    temp2 = temp2.concat(Character.toString(line.charAt(start)));
+                    start++;
+
+                }
+                // System.out.println(temp2);
+                // varName = "";
+                return temp2;
+            }
+        }
+        return null;
+    }
+
     @Override
     public TestObject createTestObject(String documentName, File document, String specText) {
 
@@ -56,54 +110,14 @@ public class TestSpecCreator extends TestObjectCreator {
                 line = scanner.nextLine();
                 len = line.length();
                 while (count != len) {
-                    // && line.charAt(count++) == 'l'
-                    int x = count + 1;
-                    if (line.charAt(count) == 'C' && line.charAt(x) == 'l') {
-                        System.out.println("HEREEEEEEE");
-                        num = count - 1;
-                        if (num != -1) {
-                            if (line.charAt(num) == ' ') {
-                                num = num - 1;
-                                while (num != -1) {
-                                    int y = num + 1;
-                                    // if (line.charAt(y) == ' ') {
-                                    if (line.charAt(num) != ' ') {
-                                        temp = temp.concat(Character.toString(line.charAt(num)));
-                                    } else {
-                                        num = 0;
-                                    }
-                                    num--;
-                                    // }
-                                }
-                                for (int i = 0; i < temp.length(); i++) {
-                                    className = temp.charAt(i) + className;
-                                }
-                                System.out.println("Class Name: " + className);
-                                temp = "";
-                                className = "";
-                            }
-                        }
+                    className = findClassName(line, count);
+                    if (className != null) {
+                        System.out.println("Class Name: " + className);
                     }
-                    int xx = x + 1;
-                    if (xx < len || x < len) {
-                        if ((line.charAt(count) == 'P' && line.charAt(x) == 'r' && line.charAt(xx) == 'i')
-                                || (line.charAt(count) == 'P' && line.charAt(x) == 'u' && line.charAt(xx) == 'b')) {
-                            int start = 0;
-                            // System.out.println(line);
-                            while (line.charAt(start) != ' ') {
-                                temp2 = temp2.concat(Character.toString(line.charAt(start)));
-                                start++;
 
-                            }
-                            System.out.println(temp2);
-                            // for (int h = 0; h < temp2.length(); h++) {
-                            // varName = temp2.charAt(h) + varName;
-                            // }
-                            // System.out.println(varName);
-                            temp2 = "";
-                            varName = "";
-
-                        }
+                    varName = findAttributeName(line, count);
+                    if (varName != null) {
+                        // System.out.println("Attribute is: " + varName);
                     }
                     count++;
                 }
