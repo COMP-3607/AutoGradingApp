@@ -20,7 +20,10 @@ public class TestSpecCreator extends TestObjectCreator {
     private ArrayList<String> list;
     private String temp2 = "";
     String line;
+    String access = "";
+    int mark;
     int attributeLen;
+    int typelen;
     String type = "";
     FileWriter writer;
     File spec;
@@ -78,6 +81,22 @@ public class TestSpecCreator extends TestObjectCreator {
         return null;
     }
 
+    public String findAccessModifier(String line, int index) {
+        index = index + 2;
+        if (line.charAt(index) != ' ') {
+            int x = index + 1;
+            int xx = index + 2;
+            if (line.charAt(index) == 'P' && line.charAt(x) == 'r' && line.charAt(xx) == 'i') {
+                return "Private";
+            }
+            if (line.charAt(count) == 'P' && line.charAt(x) == 'u' && line.charAt(xx) == 'b') {
+                return "Public";
+            }
+        }
+
+        return null;
+    }
+
     public String findAttributeName(String line, int count) {
         int x = count + 1;
         int xx = x + 1;
@@ -99,11 +118,7 @@ public class TestSpecCreator extends TestObjectCreator {
     }
 
     public String findAttributeType(String line, int index) {
-        // index++;
-        // if (index < line.length()) {
-
         if (line.charAt(index) == ' ') {
-            // System.out.println("HEYYY");
             index++;
             type = "";
             while (line.charAt(index) != ' ') {
@@ -112,8 +127,16 @@ public class TestSpecCreator extends TestObjectCreator {
             }
             return type;
         }
-        // }
         return null;
+    }
+
+    public int findAttributeMark(String line, int index) {
+        // System.out.println("HEY" + line.charAt(index));
+        if (line.charAt(index) != ' ') {
+            char tempNum = line.charAt(index);
+            return Character.getNumericValue(tempNum);
+        }
+        return -1;
     }
 
     @Override
@@ -140,7 +163,16 @@ public class TestSpecCreator extends TestObjectCreator {
                         type = findAttributeType(line, attributeLen);
                         if (type != null) {
                             System.out.println("Attribute type is: " + type);
+                            typelen = type.length();
+                            typelen = typelen + 2 + attributeLen;
+                            mark = findAttributeMark(line, typelen);
+                            if (mark != -1) {
+                                System.out.println("Mark is: " + mark);
+                                access = findAccessModifier(line, typelen);
+                                System.out.println("Access is: " + access);
+                            }
                         }
+
                     }
 
                     count++;
