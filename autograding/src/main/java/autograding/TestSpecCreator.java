@@ -30,6 +30,7 @@ public class TestSpecCreator extends TestObjectCreator {
     private FileWriter writer;
     private File spec;
     private Scanner scanner;
+    private boolean ready = false;
     private String documentName = "specDoc.txt";
     private boolean signal = false;
     private String signatures = "";
@@ -143,27 +144,64 @@ public class TestSpecCreator extends TestObjectCreator {
         return -1;
     }
 
-    public String findMethodSignatures(String line, int index) {
+    public String findMethodSignatures(String line) {
+        int index = 0;
         int x = index + 1;
         int xx = x + 1;
         int y = xx + 1;
         int yy = y + 1;
-        if (yy < line.length()) {
-            if (line.charAt(index) == ' ' && line.charAt(x) == 'C' && line.charAt(xx) == 'l' && line.charAt(y) == 'a'
-                    && line.charAt(yy) == 's' && signal == true) {
-                signal = false;
-                tempSigLine = "";
-                return SigLine;
-            }
-            if (signal == true) {
-                tempSigLine = line;
-                SigLine = SigLine.concat(tempSigLine);
-            }
-            if (line.charAt(index) == 'S' && line.charAt(x) == 'i' && line.charAt(xx) == 'g') {
-                signal = true;
-            }
+        while (index < line.length()) {
 
+            /*
+             * 
+             * if (index >= line.length()) {
+             * index = line.length();
+             * x = line.length() - 1;
+             * xx = line.length() - 1;
+             * y = line.length() - 1;
+             * yy = line.length() - 1;
+             * }
+             * if (x >= line.length()) {
+             * x = line.length() - 1;
+             * }
+             * if (xx >= line.length()) {
+             * xx = line.length() - 1;
+             * }
+             * if (y >= line.length()) {
+             * y = line.length() - 1;
+             * }
+             * if (yy >= line.length()) {
+             * yy = line.length() - 1;
+             * }
+             */
+            // if (yy < line.length()) {
+            if (signal == false) {
+
+                if (line.charAt(index) == ' ' && line.charAt(x) == 'C' && line.charAt(xx) == 'l'
+                        && line.charAt(y) == 'a'
+                        && line.charAt(yy) == 's' && signal == true) {
+                    signal = false;
+                    tempSigLine = "";
+                    System.out.println(SigLine);
+                    return SigLine;
+                }
+                if (signal == true) {
+                    tempSigLine = line;
+                    SigLine = SigLine.concat(tempSigLine);
+                    tempSigLine = "";
+                }
+                // && line.charAt(xx) == 'g' && line.charAt(y) == 'n'
+                if (line.charAt(index) == 'S' && line.charAt(x) == 'i' && line.charAt(xx) == 'g'
+                        && line.charAt(y) == 'n') {
+                    signal = true;
+                    System.out.println("HERE");
+                }
+
+            }
+            index++;
         }
+
+        // }
         return null;
     }
 
@@ -176,6 +214,13 @@ public class TestSpecCreator extends TestObjectCreator {
                 count = 0;
                 line = scanner.nextLine();
                 len = line.length();
+                // ready = true;
+                signatures = findMethodSignatures(line);
+                if (signatures != null && signal == false) {
+                    System.out.println("Signatures: " + signatures);
+                    SigLine = "";
+                    signatures = "";
+                }
                 while (count != len) {
                     className = findClassName(line, count);
                     if (className != null) {
@@ -198,12 +243,15 @@ public class TestSpecCreator extends TestObjectCreator {
                             }
                         }
                     }
-                    signatures = findMethodSignatures(line, count);
-                    if (signatures != null && signal == false) {
-                        System.out.println("Signatures: " + signatures);
-                        SigLine = "";
-                        signatures = null;
-                    }
+                    /*
+                     * 
+                     * signatures = findMethodSignatures(line, count);
+                     * if (signatures != null && signal == false && ready == true) {
+                     * System.out.println("Signatures: " + signatures);
+                     * SigLine = "";
+                     * signatures = "";
+                     * }
+                     */
                     count++;
                 }
             }
