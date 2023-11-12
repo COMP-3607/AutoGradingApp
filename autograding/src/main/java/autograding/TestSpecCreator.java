@@ -19,16 +19,16 @@ public class TestSpecCreator extends TestObjectCreator {
     private boolean found = false;
     private ArrayList<String> list;
     private String temp2 = "";
-    String line;
-    String access = "";
-    int mark;
-    int attributeLen;
-    int typelen;
-    String type = "";
-    FileWriter writer;
-    File spec;
-    Scanner scanner;
-    String documentName = "specDoc.txt";
+    private String line;
+    private String access = "";
+    private int mark;
+    private int attributeLen;
+    private int typelen;
+    private String type = "";
+    private FileWriter writer;
+    private File spec;
+    private Scanner scanner;
+    private String documentName = "specDoc.txt";
 
     public TestSpecCreator() {
     }
@@ -141,9 +141,7 @@ public class TestSpecCreator extends TestObjectCreator {
 
     @Override
     public TestObject createTestObject(String documentName, File document, String specText) {
-
         writeToFile(document = createTxtFile(documentName), specText);
-
         try {
             scanner = new Scanner(document);
             while (scanner.hasNextLine()) {
@@ -155,7 +153,6 @@ public class TestSpecCreator extends TestObjectCreator {
                     if (className != null) {
                         System.out.println("Class Name: " + className);
                     }
-
                     varName = findAttributeName(line, count);
                     if (varName != null) {
                         System.out.println("Attribute is: " + varName);
@@ -172,14 +169,11 @@ public class TestSpecCreator extends TestObjectCreator {
                                 System.out.println("Access is: " + access);
                             }
                         }
-
                     }
-
                     count++;
                 }
             }
             scanner.close();
-
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

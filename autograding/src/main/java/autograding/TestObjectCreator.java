@@ -3,7 +3,7 @@ package autograding;
 import java.io.File;
 import java.util.ArrayList;
 
-public class TestObjectCreator {
+public abstract class TestObjectCreator {
     private String specText;
     private TestJavaCreator javaCreator;
     private TestSpecCreator specCreator;
@@ -18,8 +18,17 @@ public class TestObjectCreator {
         this.specText = specText;
     }
 
-    public TestObject createTestObject(String documentName, File document, String specText) {
+    public abstract TestObject createTestObject(String documentName, File document, String specText);
 
-        return null;
-    }
+    public abstract File createTxtFile(String documentName);
+
+    public abstract void writeToFile(File document, String specText);
+
+    public abstract String findClassName(String line, int count);
+
+    public abstract String findAccessModifier(String line, int index);
+
+    public abstract String findAttributeName(String line, int count);
+
+    public abstract String findAttributeType(String line, int index);
 }
