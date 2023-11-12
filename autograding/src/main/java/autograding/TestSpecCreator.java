@@ -22,6 +22,8 @@ public class TestSpecCreator extends TestObjectCreator {
     private String line;
     private String access = "";
     private int mark;
+    private String tempSigLine = "";
+    private String SigLine = "";
     private int attributeLen;
     private int typelen;
     private String type = "";
@@ -29,6 +31,8 @@ public class TestSpecCreator extends TestObjectCreator {
     private File spec;
     private Scanner scanner;
     private String documentName = "specDoc.txt";
+    private boolean signal = false;
+    private String signatures = "";
 
     public TestSpecCreator() {
     }
@@ -139,6 +143,30 @@ public class TestSpecCreator extends TestObjectCreator {
         return -1;
     }
 
+    public String findMethodSignatures(String line, int index) {
+        int x = index + 1;
+        int xx = x + 1;
+        int y = xx + 1;
+        int yy = y + 1;
+        if (yy < line.length()) {
+            if (line.charAt(index) == ' ' && line.charAt(x) == 'C' && line.charAt(xx) == 'l' && line.charAt(y) == 'a'
+                    && line.charAt(yy) == 's' && signal == true) {
+                signal = false;
+                tempSigLine = "";
+                return SigLine;
+            }
+            if (signal == true) {
+                tempSigLine = line;
+                SigLine = SigLine.concat(tempSigLine);
+            }
+            if (line.charAt(index) == 'S' && line.charAt(x) == 'i' && line.charAt(xx) == 'g') {
+                signal = true;
+            }
+
+        }
+        return null;
+    }
+
     @Override
     public TestObject createTestObject(String documentName, File document, String specText) {
         writeToFile(document = createTxtFile(documentName), specText);
@@ -164,11 +192,17 @@ public class TestSpecCreator extends TestObjectCreator {
                             typelen = typelen + 2 + attributeLen;
                             mark = findAttributeMark(line, typelen);
                             if (mark != -1) {
-                                System.out.println("Mark is: " + mark);
+                                // System.out.println("Mark is: " + mark);
                                 access = findAccessModifier(line, typelen);
-                                System.out.println("Access is: " + access);
+                                // System.out.println("Access is: " + access);
                             }
                         }
+                    }
+                    signatures = findMethodSignatures(line, count);
+                    if (signatures != null && signal == false) {
+                        System.out.println("Signatures: " + signatures);
+                        SigLine = "";
+                        signatures = null;
                     }
                     count++;
                 }
