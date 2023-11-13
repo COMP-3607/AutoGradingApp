@@ -1,11 +1,11 @@
 package autograding;
 
-
 public class App {
     public static SubmissionReader javaReader = new SubmissionReader();
     public static SpecReader specReader = new SpecReader();
 
     public static void main(String[] args) {
+
         double score;
         AutoGrader autoGrader = new AutoGrader();
         // Specify the path to the uploaded ZIP file.

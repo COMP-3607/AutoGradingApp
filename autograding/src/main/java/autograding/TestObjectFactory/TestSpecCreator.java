@@ -145,60 +145,67 @@ public class TestSpecCreator extends TestObjectCreator {
     }
 
     public String findMethodSignatures(String line) {
-        int index = 0;
-        int x = index + 1;
-        int xx = x + 1;
-        int y = xx + 1;
-        int yy = y + 1;
-        while (index < line.length()) {
+        int loc = 0;
+        int x;
+        int xx;
+        int y;
+        int yy;
+        while (loc < line.length()) {
+            x = loc + 1;
+            xx = x + 1;
+            y = xx + 1;
+            yy = y + 1;
 
-            /*
-             * 
-             * if (index >= line.length()) {
-             * index = line.length();
-             * x = line.length() - 1;
-             * xx = line.length() - 1;
-             * y = line.length() - 1;
-             * yy = line.length() - 1;
-             * }
-             * if (x >= line.length()) {
-             * x = line.length() - 1;
-             * }
-             * if (xx >= line.length()) {
-             * xx = line.length() - 1;
-             * }
-             * if (y >= line.length()) {
-             * y = line.length() - 1;
-             * }
-             * if (yy >= line.length()) {
-             * yy = line.length() - 1;
-             * }
-             */
+            if (loc >= line.length()) {
+                loc = line.length();
+                x = line.length() - 1;
+                xx = line.length() - 1;
+                y = line.length() - 1;
+                yy = line.length() - 1;
+            }
+            if (x >= line.length()) {
+                x = line.length() - 1;
+            }
+            if (xx >= line.length()) {
+                xx = line.length() - 1;
+            }
+            if (y >= line.length()) {
+                y = line.length() - 1;
+            }
+            if (yy >= line.length()) {
+                yy = line.length() - 1;
+            }
+
             // if (yy < line.length()) {
-            if (signal == false) {
+            /// if (signal == false) {
+            // && line.charAt(yy) == 's'
+            if (line.charAt(loc) == ' ' && line.charAt(x) == 'C' && line.charAt(xx) == 'l'
+                    && line.charAt(y) == 'a' && line.charAt(yy) == 's'
+                    && signal == true) {
+                signal = false;
+                tempSigLine = "";
+                // System.out.println(SigLine);
+                return SigLine;
+            }
+            if (line != "" && signal == true) {
+                tempSigLine = line;
+                SigLine = SigLine.concat(tempSigLine);
+                tempSigLine = "";
+                signal = false;
+                line = "";
+            }
+            // && line.charAt(xx) == 'g' && line.charAt(y) == 'n'
+            if (line != "") {
 
-                if (line.charAt(index) == ' ' && line.charAt(x) == 'C' && line.charAt(xx) == 'l'
-                        && line.charAt(y) == 'a'
-                        && line.charAt(yy) == 's' && signal == true) {
-                    signal = false;
-                    tempSigLine = "";
-                    System.out.println(SigLine);
-                    return SigLine;
-                }
-                if (signal == true) {
-                    tempSigLine = line;
-                    SigLine = SigLine.concat(tempSigLine);
-                    tempSigLine = "";
-                }
-                // && line.charAt(xx) == 'g' && line.charAt(y) == 'n'
-                if (line.charAt(index) == 'S' && line.charAt(x) == 'i' && line.charAt(xx) == 'g'
+                if (line.charAt(loc) == 'S' && line.charAt(x) == 'i' && line.charAt(xx) == 'g'
                         && line.charAt(y) == 'n') {
                     signal = true;
+                    line = "";
                     System.out.println("HERE");
+                    // }
                 }
-
             }
-            index++;
+            loc++;
         }
 
         // }
