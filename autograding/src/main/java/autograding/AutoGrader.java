@@ -2,6 +2,10 @@ package autograding;
 
 import java.io.File;
 
+import autograding.DataReader.SpecReader;
+import autograding.DataReader.SubmissionReader;
+import autograding.TestObjectFactory.TestSpecCreator;
+
 public class AutoGrader {
     private SpecReader specReader;
     private SubmissionReader javaReader;

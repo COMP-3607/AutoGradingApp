@@ -1,4 +1,4 @@
-package autograding;
+package autograding.DataReader;
 
 import java.util.Enumeration;
 import java.util.Scanner;

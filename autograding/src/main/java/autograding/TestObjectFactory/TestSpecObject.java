@@ -2,10 +2,6 @@ package autograding.TestObjectFactory;
 
 import java.util.ArrayList;
 
-import autograding.TestAttribute;
-import autograding.TestMethod;
-import autograding.TestObject;
-
 public class TestSpecObject implements TestObject {
     String className;
     ArrayList<TestAttribute> attributes;

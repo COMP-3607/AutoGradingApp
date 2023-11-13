@@ -1,4 +1,4 @@
-package autograding;
+package autograding.TestObjectFactory;
 
 import java.io.File;
 import java.util.ArrayList;

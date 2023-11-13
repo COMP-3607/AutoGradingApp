@@ -1,4 +1,4 @@
-package autograding;
+package autograding.TestObjectFactory;
 
 public class TestAttribute {
     private String name;

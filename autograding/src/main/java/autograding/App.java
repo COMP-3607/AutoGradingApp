@@ -1,5 +1,8 @@
 package autograding;
 
+import autograding.DataReader.SpecReader;
+import autograding.DataReader.SubmissionReader;
+
 public class App {
     public static SubmissionReader javaReader = new SubmissionReader();
     public static SpecReader specReader = new SpecReader();

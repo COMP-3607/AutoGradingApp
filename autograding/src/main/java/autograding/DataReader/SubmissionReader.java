@@ -1,4 +1,4 @@
-package autograding;
+package autograding.DataReader;
 
 import java.io.File;
 import java.io.FileOutputStream;
