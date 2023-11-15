@@ -51,7 +51,7 @@ public class SpecReader implements FileReader {
                                 PDDocument document = PDDocument.load(entryStream)) {
                             PDFTextStripper textStripper = new PDFTextStripper();
                             pdfText = textStripper.getText(document);
-                            System.out.println("Text in the PDF file:\n" + pdfText);
+                            // System.out.println("Text in the PDF file:\n" + pdfText);
                         }
                     } else if (entry.getName().toLowerCase().endsWith(".java")) {
                         System.out.println("Java file found: " + entry.getName());
@@ -60,7 +60,7 @@ public class SpecReader implements FileReader {
                                 BufferedReader reader = new BufferedReader(new InputStreamReader(entryStream))) {
                             String code;
                             while ((code = reader.readLine()) != null) {
-                                System.out.println("Java file contents: " + code);
+                                // System.out.println("Java file contents: " + code);
                             }
                         }
                     } else {
@@ -95,7 +95,7 @@ public class SpecReader implements FileReader {
                         try (PDDocument document = PDDocument.load(baos.toByteArray())) {
                             PDFTextStripper textStripper = new PDFTextStripper();
                             String pdfText = textStripper.getText(document);
-                            System.out.println("Text in the PDF file:\n" + pdfText);
+                            // System.out.println("Text in the PDF file:\n" + pdfText);
                         }
                     }
                 } else if (subEntry.getName().toLowerCase().endsWith(".java")) {
@@ -107,7 +107,7 @@ public class SpecReader implements FileReader {
                         while ((len = zis.read(buffer)) > 0) {
                             baos.write(buffer, 0, len);
                         }
-                        System.out.println("Java file contents:" + baos.toString());
+                        // System.out.println("Java file contents:" + baos.toString());
                     }
                 } else {
                     // Handle other file types or extensions if needed
