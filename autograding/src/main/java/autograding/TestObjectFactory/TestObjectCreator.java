@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 public abstract class TestObjectCreator {
     private String specText;
+    private TestObject object;
     private TestJavaCreator javaCreator;
     private TestSpecCreator specCreator;
     private ArrayList<TestAttribute> attributes;
@@ -18,7 +19,9 @@ public abstract class TestObjectCreator {
         this.specText = specText;
     }
 
-    public abstract ArrayList<TestObject> createTestObject(String documentName, File document, String specText);
+    public ArrayList<TestObject> createTestObject(String documentName, File document, String specText) {
+        return null;
+    }
 
     public abstract File createTxtFile(String documentName);
 

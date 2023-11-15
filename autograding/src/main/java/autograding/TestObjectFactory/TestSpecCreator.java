@@ -12,7 +12,7 @@ public class TestSpecCreator extends TestObjectCreator {
     private ArrayList<TestAttribute> attributes = new ArrayList<TestAttribute>();
     private TestMethod method;
     private TestSpecObject specObject = null;
-    private ArrayList<TestSpecObject> specObjects = new ArrayList<TestSpecObject>();
+    private ArrayList<TestObject> specObjects = new ArrayList<TestObject>();
     private int count = 0;
     private int num;
     private int len;
@@ -229,7 +229,7 @@ public class TestSpecCreator extends TestObjectCreator {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        return null;
+        return specObjects;
 
     }
 }
