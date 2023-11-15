@@ -36,7 +36,8 @@ numLuggage int 1 Private, instance variable, declared only.
 
 cabinClass char 1 Private, instance variable, declared only.
 
-Method Signature Return Type MARKS CRITERIA
+Method Signature Return 
+Type MARKS CRITERIA
 
 Passenger (String 
 passportNumber, String 
@@ -60,7 +61,8 @@ state.  (2 marks)
 
 (1 mark)
 
-assignRandomCabinClass( ) void 2 Sets the cabinClass variable to a random cabin class value :  ‘F', 'B', 'P', 'E'
+assignRandomCabinClass( ) void 2 Sets the cabinClass variable to a random 
+cabin class value :  ‘F', 'B', 'P', 'E'
 
 COMP2603 Assignment 1	Marking Scheme	 	 	 	 	 	 	 	          Page  of 1 4
 
@@ -99,20 +101,23 @@ Returns a String representation of a
 Passenger object. See format below
 
 
-Method Signature Return Type MARKS CRITERIA
+Method Signature Return 
+Type MARKS CRITERIA
 
 Attribute Type MARKS Purpose
 
 owner Passenger 1 The Passenger who owns/checks in the luggage.
 
-luggageSlipIDCounter int 1 A class variable that starts at 1 and increments by 1 for each new LuggageSlip object created.
+luggageSlipIDCounter int 1 A class variable that starts at 1 and increments by 
+1 for each new LuggageSlip object created.
 
 luggageSlipID String 1
 A unique identifier for the LuggageSlip, produced 
 using Passenger’s flight number, last name and 
 the luggageSlipIDCounter. Example below
 
-label String 1 A string variable for recording any additional details on the luggage slip.
+label String 1 A string variable for recording any additional 
+details on the luggage slip.
 
 Method Signature Return Type MARKS Purpose
 
@@ -124,9 +129,8 @@ input parameters, and sets the label to an
 empty String.
 
 LuggageSlip (Passenger p,  
-Flight f, String label) 3
+Flight f, String label) 3 Overloaded constructor. Initialises all state 
 
-Overloaded constructor. Initialises all state 
 using the input parameters (including label).
 
 hasOwner (String 
@@ -136,7 +140,8 @@ Return true if the owner of the LuggageSlip
 has the supplied passportNumber, false 
 otherwise.
 
-toString( ) String 2 Returns a String representation of the LuggageSlip object. See format below.
+toString( ) String 2 Returns a String representation of the 
+LuggageSlip object. See format below.
 
 COMP2603 Assignment 1	Marking Scheme	 	 	 	 	 	 	 	          Page  of 2 4
 
@@ -179,6 +184,7 @@ constructor
 Method Signature Return Type MARKS CRITERIA
 
 LuggageManifest ( ) 1 Constructor. 
+
 - Initialises the slips collection.
 
 addLuggage(Passenger 
@@ -291,7 +297,8 @@ the Flight, then the message “Invalid flight”
 is returned.
 
 
-printLuggageManifest( ) String 1 Returns a String representation of the manifest
+printLuggageManifest( ) String 1 Returns a String representation of the 
+manifest
 
 getAllowedLuggage( char 
 cabinClass) int 2
@@ -310,7 +317,8 @@ class, after which a cost is incurred.
 ‘E': 0 pieces
 
 
-toString( ) String 1 Returns a String representation of the Flight.
+toString( ) String 1 Returns a String representation of the 
+Flight.
 
 COMP2603 Assignment 1	Marking Scheme	 	 	 	 	 	 	 	          Page  of 4 4
 
