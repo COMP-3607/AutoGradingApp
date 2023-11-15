@@ -1,11 +1,12 @@
 package autograding.TestObjectFactory;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class TestJavaCreator extends TestObjectCreator {
 
     @Override
-    public TestObject createTestObject(String documentName, File document, String specText) {
+    public ArrayList<TestObject> createTestObject(String documentName, File document, String specText) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'createTestObject'");
     }

@@ -1,4 +1,4 @@
-package autograding;
+package autograding.DataReader;
 
 import java.util.Enumeration;
 import java.util.Scanner;
@@ -24,84 +24,10 @@ import com.coremedia.iso.boxes.CompositionTimeToSample.Entry;
 import org.apache.tika.parser.pdf.PDFParser;
 import org.apache.tika.parser.ParseContext;
 
-/*
- * Open zip folder 
- * open regular folder
- * Access pdf
- * Read pdf
- * return text in folder
- */
-
 public class SpecReader implements FileReader {
-    private FileInputStream zippedSpecStream = null;
-    private File specFile;
-    private Scanner fileScanner;
-    private ZipInputStream zipDataStream;
-    private ZipFile zipFile;
-    private ZipEntry entry;
-    private Entry inside;
-    private BodyContentHandler handler = new BodyContentHandler();
-    private Metadata meta = new Metadata();
-    private ParseContext contextParser = new ParseContext();
-    private PDFParser parser = new PDFParser();
-    private String error = "Error reading file";
-    private FileInputStream folderSpecStream;
-    private File file;
-    private File folder;
-    // private FileInputStream stream;
-    int ch;
-    byte bytes[];
-    FileInputStream stream;
+    private String pdfText = "";
 
-    @Override
-    public void readFile(String specFilePath, String specFolder, String specExtractionDirectory) {
-
-        /*try (ZipFile zipFile = new ZipFile(specFilePath)) {
-            Enumeration<? extends ZipEntry> entries = zipFile.entries();
-
-            while (entries.hasMoreElements()) {
-                ZipEntry entry = entries.nextElement();
-
-                // Check if the entry is a directory (folder)
-                if (entry.isDirectory()) {
-                    System.out.println("Folder found: " + entry.getName());
-                } else {
-                    // Check if the entry is a zipped folder
-                    if (entry.getName().endsWith(".zip")) {
-                        System.out.println("Zipped folder found: " + entry.getName());
-                        // Open and print the contents of the zipped folder
-                        try (InputStream entryStream = zipFile.getInputStream(entry);
-                             ZipInputStream zis = new ZipInputStream(entryStream)) {
-                            ZipEntry subEntry;
-                            while ((subEntry = zis.getNextEntry()) != null) {
-                                System.out.println("File in zipped folder: " + subEntry.getName());
-                                // Print the contents of the file (you can modify this part as needed)
-                               /*ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                                byte[] buffer = new byte[1024];
-                                int len;
-                                while ((len = zis.read(buffer)) > 0) {
-                                    baos.write(buffer, 0, len);
-                                }
-                                System.out.println("File contents: " + new String(baos.toByteArray()));*/
-                           /*  }
-                        }
-                    } else {
-                        System.out.println("File found: " + entry.getName());
-                        // Print the contents of the file (you can modify this part as needed)
-                        try (InputStream entryStream = zipFile.getInputStream(entry);
-                             BufferedReader reader = new BufferedReader(new InputStreamReader(entryStream))) {
-                            String line;
-                            while ((line = reader.readLine()) != null) {
-                                System.out.println("File contents: " + line);
-                            }
-                        }
-                    }
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-
+    public String readFile(String specFilePath, String specFolder, String specExtractionDirectory) {
         try (ZipFile zipFile = new ZipFile(specFilePath)) {
             Enumeration<? extends ZipEntry> entries = zipFile.entries();
 
@@ -110,7 +36,6 @@ public class SpecReader implements FileReader {
 
                 // Check if the entry is a directory (folder)
                 if (entry.isDirectory()) {
-                    
                     System.out.println("Folder found: " + entry.getName());
                 } else {
                     // Check if the entry is a zipped folder
@@ -123,20 +48,31 @@ public class SpecReader implements FileReader {
                         System.out.println("PDF file found: " + entry.getName());
                         // Open and read the contents of the PDF file
                         try (InputStream entryStream = zipFile.getInputStream(entry);
-                             PDDocument document = PDDocument.load(entryStream)) {
+                                PDDocument document = PDDocument.load(entryStream)) {
                             PDFTextStripper textStripper = new PDFTextStripper();
-                            String pdfText = textStripper.getText(document);
+                            pdfText = textStripper.getText(document);
                             System.out.println("Text in the PDF file:\n" + pdfText);
+                        }
+                    } else if (entry.getName().toLowerCase().endsWith(".java")) {
+                        System.out.println("Java file found: " + entry.getName());
+                        // Open and read the contents of the Java file
+                        try (InputStream entryStream = zipFile.getInputStream(entry);
+                                BufferedReader reader = new BufferedReader(new InputStreamReader(entryStream))) {
+                            String code;
+                            while ((code = reader.readLine()) != null) {
+                                System.out.println("Java file contents: " + code);
+                            }
                         }
                     } else {
                         // Handle other file types or extensions if needed
-                        System.out.println("Non-PDF file found: " + entry.getName());
+                        System.out.println("Other file found: " + entry.getName());
                     }
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return pdfText;
     }
 
     private static void processZippedFolder(InputStream zipInputStream) throws IOException {
@@ -162,11 +98,22 @@ public class SpecReader implements FileReader {
                             System.out.println("Text in the PDF file:\n" + pdfText);
                         }
                     }
+                } else if (subEntry.getName().toLowerCase().endsWith(".java")) {
+                    System.out.println("Java file found inside zipped folder: " + subEntry.getName());
+                    // Open and read the contents of the Java file
+                    try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+                        byte[] buffer = new byte[1024];
+                        int len;
+                        while ((len = zis.read(buffer)) > 0) {
+                            baos.write(buffer, 0, len);
+                        }
+                        System.out.println("Java file contents:" + baos.toString());
+                    }
                 } else {
                     // Handle other file types or extensions if needed
-                    System.out.println("Non-PDF file found inside zipped folder: " + subEntry.getName());
+                    System.out.println("Other file found inside zipped folder: " + subEntry.getName());
                 }
             }
-        }   
+        }
     }
 }

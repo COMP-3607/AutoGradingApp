@@ -4,5 +4,5 @@ import java.util.ArrayList;
 
 public class SpecClass {
     private String name;
-    private ArrayList<SpecMethod> methodData;
+    private ArrayList<TestMethod> methodData;
 }

@@ -18,7 +18,7 @@ public abstract class TestObjectCreator {
         this.specText = specText;
     }
 
-    public abstract TestObject createTestObject(String documentName, File document, String specText);
+    public abstract ArrayList<TestObject> createTestObject(String documentName, File document, String specText);
 
     public abstract File createTxtFile(String documentName);
 

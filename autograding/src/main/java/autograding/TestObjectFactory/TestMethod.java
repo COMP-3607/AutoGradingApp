@@ -2,14 +2,13 @@ package autograding.TestObjectFactory;
 
 import java.util.ArrayList;
 
-import ucar.units.Test;
-
 public class TestMethod {
     private String name;
     private ArrayList<TestAttribute> parameters;
     private int marks;
     private String description;
     private String returnType;
+    private String signature = "";
 
     public TestMethod(String name, int marks, String description, String returnType) {
         this.name = name;
@@ -17,6 +16,10 @@ public class TestMethod {
         this.description = description;
         this.returnType = returnType;
         this.parameters = new ArrayList<>();
+    }
+
+    public TestMethod(String signature) {
+        this.signature = signature;
     }
 
     // Add a parameter to the method
@@ -43,5 +46,9 @@ public class TestMethod {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getSignature() {
+        return signature;
     }
 }

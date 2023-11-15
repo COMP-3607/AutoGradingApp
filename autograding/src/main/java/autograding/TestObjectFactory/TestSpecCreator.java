@@ -8,16 +8,18 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class TestSpecCreator extends TestObjectCreator {
-    private Character ch;
+    private TestAttribute attribute = null;
+    private ArrayList<TestAttribute> attributes = new ArrayList<TestAttribute>();
+    private TestMethod method;
+    private TestSpecObject specObject = null;
+    private ArrayList<TestSpecObject> specObjects = new ArrayList<TestSpecObject>();
     private int count = 0;
     private int num;
     private int len;
     private String className = "";
+    private String tempClassName = "";
     private String varName = "";
     private String temp = "";
-    private char[] x;
-    private boolean found = false;
-    private ArrayList<String> list;
     private String temp2 = "";
     private String line;
     private String access = "";
@@ -30,8 +32,6 @@ public class TestSpecCreator extends TestObjectCreator {
     private FileWriter writer;
     private File spec;
     private Scanner scanner;
-    private boolean ready = false;
-    private String documentName = "specDoc.txt";
     private boolean signal = false;
     private String signatures = "";
 
@@ -145,75 +145,31 @@ public class TestSpecCreator extends TestObjectCreator {
     }
 
     public String findMethodSignatures(String line) {
-        int loc = 0;
-        int x;
-        int xx;
-        int y;
-        int yy;
-        while (loc < line.length()) {
-            x = loc + 1;
-            xx = x + 1;
-            y = xx + 1;
-            yy = y + 1;
-
-            if (loc >= line.length()) {
-                loc = line.length();
-                x = line.length() - 1;
-                xx = line.length() - 1;
-                y = line.length() - 1;
-                yy = line.length() - 1;
-            }
-            if (x >= line.length()) {
-                x = line.length() - 1;
-            }
-            if (xx >= line.length()) {
-                xx = line.length() - 1;
-            }
-            if (y >= line.length()) {
-                y = line.length() - 1;
-            }
-            if (yy >= line.length()) {
-                yy = line.length() - 1;
-            }
-
-            // if (yy < line.length()) {
-            /// if (signal == false) {
-            // && line.charAt(yy) == 's'
-            if (line.charAt(loc) == ' ' && line.charAt(x) == 'C' && line.charAt(xx) == 'l'
-                    && line.charAt(y) == 'a' && line.charAt(yy) == 's'
-                    && signal == true) {
-                signal = false;
-                tempSigLine = "";
-                // System.out.println(SigLine);
-                return SigLine;
-            }
-            if (line != "" && signal == true) {
-                tempSigLine = line;
-                SigLine = SigLine.concat(tempSigLine);
-                tempSigLine = "";
-                signal = false;
-                line = "";
-            }
-            // && line.charAt(xx) == 'g' && line.charAt(y) == 'n'
-            if (line != "") {
-
-                if (line.charAt(loc) == 'S' && line.charAt(x) == 'i' && line.charAt(xx) == 'g'
-                        && line.charAt(y) == 'n') {
-                    signal = true;
-                    line = "";
-                    System.out.println("HERE");
-                    // }
-                }
-            }
-            loc++;
+        int result = 0;
+        result = line.indexOf(" Class");
+        if (result != -1 && signal == true) {
+            signal = false;
+            return SigLine;
         }
 
-        // }
-        return null;
+        result = line.indexOf(" Signature");
+        if (result != -1) {
+            signal = true;
+        }
+        if (signal == true && line != "") {
+            tempSigLine = line;
+            SigLine = SigLine.concat(" " + tempSigLine);
+        }
+
+        if (signal == false) {
+            return "";
+        }
+        return "";
+
     }
 
     @Override
-    public TestObject createTestObject(String documentName, File document, String specText) {
+    public ArrayList<TestObject> createTestObject(String documentName, File document, String specText) {
         writeToFile(document = createTxtFile(documentName), specText);
         try {
             scanner = new Scanner(document);
@@ -222,24 +178,37 @@ public class TestSpecCreator extends TestObjectCreator {
                 line = scanner.nextLine();
                 len = line.length();
                 // ready = true;
+                // signatures = findMethodSignatures(line);
                 signatures = findMethodSignatures(line);
-                if (signatures != null && signal == false) {
-                    System.out.println("Signatures: " + signatures);
+                if (signatures != "" && signal == false) {
+                    // System.out.println("Signatures: " + signatures);
+                    method = new TestMethod(signatures);
                     SigLine = "";
                     signatures = "";
-                }
-                while (count != len) {
-                    className = findClassName(line, count);
                     if (className != null) {
-                        System.out.println("Class Name: " + className);
+                        specObject = new TestSpecObject(className, attributes, method);
+                        specObjects.add(specObject);
+                        // System.out.println("HEREEE");
+                        // System.out.println(className);
+                        System.out.println(specObject.toString());
+                    }
+
+                    System.out.println("=================================================================");
+                }
+
+                while (count != len) {
+                    tempClassName = findClassName(line, count);
+                    if (tempClassName != null) {
+                        className = tempClassName;
+                        // System.out.println("Class Name: " + className);
                     }
                     varName = findAttributeName(line, count);
                     if (varName != null) {
-                        System.out.println("Attribute is: " + varName);
+                        // System.out.println("Attribute is: " + varName);
                         attributeLen = varName.length();
                         type = findAttributeType(line, attributeLen);
                         if (type != null) {
-                            System.out.println("Attribute type is: " + type);
+                            // System.out.println("Attribute type is: " + type);
                             typelen = type.length();
                             typelen = typelen + 2 + attributeLen;
                             mark = findAttributeMark(line, typelen);
@@ -247,18 +216,11 @@ public class TestSpecCreator extends TestObjectCreator {
                                 // System.out.println("Mark is: " + mark);
                                 access = findAccessModifier(line, typelen);
                                 // System.out.println("Access is: " + access);
+                                attribute = new TestAttribute(varName, type, access, mark);
+                                attributes.add(attribute);
                             }
                         }
                     }
-                    /*
-                     * 
-                     * signatures = findMethodSignatures(line, count);
-                     * if (signatures != null && signal == false && ready == true) {
-                     * System.out.println("Signatures: " + signatures);
-                     * SigLine = "";
-                     * signatures = "";
-                     * }
-                     */
                     count++;
                 }
             }
@@ -267,7 +229,7 @@ public class TestSpecCreator extends TestObjectCreator {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        return null;
+        return attributes;
 
     }
 }
