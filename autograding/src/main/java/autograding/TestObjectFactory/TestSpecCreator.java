@@ -190,10 +190,10 @@ public class TestSpecCreator extends TestObjectCreator {
                         specObjects.add(specObject);
                         // System.out.println("HEREEE");
                         // System.out.println(className);
-                        System.out.println(specObject.toString());
+                        // System.out.println(specObject.toString());
                     }
 
-                    System.out.println("=================================================================");
+                    // System.out.println("=================================================================");
                 }
 
                 while (count != len) {
