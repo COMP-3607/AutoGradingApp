@@ -1,6 +1,6 @@
 package autograding.TestObjectFactory;
 
-public class TestAttribute implements TestObject {
+public class TestAttribute {
     private String name;
     private String type;
     private String description;

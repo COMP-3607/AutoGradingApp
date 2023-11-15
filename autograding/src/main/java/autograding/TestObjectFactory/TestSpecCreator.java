@@ -229,7 +229,7 @@ public class TestSpecCreator extends TestObjectCreator {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        return attributes;
+        return null;
 
     }
 }
