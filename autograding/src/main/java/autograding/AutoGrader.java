@@ -21,6 +21,7 @@ public class AutoGrader {
     public AutoGrader() {
         specReader = new SpecReader();
         specMaker = new TestSpecCreator();
+        javaMaker = new TestJavaCreator();
         javaReader = new SubmissionReader();
         score = 0;
     }
@@ -29,9 +30,9 @@ public class AutoGrader {
             String javaExtractionDirectory) {
         specText = specReader.readFile(specFilePath, specFolder, specExtractionDirectory);
         javaText = javaReader.readFile(specFilePath, specFolder, javaExtractionDirectory);
-        System.out.println(javaText);
+        // System.out.println(javaText);
         specMaker.createTestObject(specDocumentName, document, specText);
-
+        javaMaker.createTestObject(javaZipFilePath, document, javaExtractionDirectory);
         return score;
     }
 }

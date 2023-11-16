@@ -2,6 +2,7 @@ package autograding.DataReader;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
@@ -9,65 +10,67 @@ import java.util.zip.ZipFile;
 
 //public class SubmissionReader implements FileReader {
 //  String str;
-/*
- * 
- * public static void main(String[] args) {
- * // Specify the path to the uploaded ZIP file.
- * String zipFilePath = "path_to_uploaded_zip_file.zip";
- * 
- * // Specify the directory where you want to extract the submissions.
- * String extractionDirectory = "extraction_directory";
- * 
- * // Call the method to process the submissions.
- * processSubmissions(zipFilePath, extractionDirectory);
- * }
- */
-/*
-* 
-public String readFile(String zipFilePath, String specFolder, String extractionDirectory) {
-    try {
-           // Create a directory for extracting submissions.
-           File extractionDir = new File(extractionDirectory);
-           extractionDir.mkdirs();
-           
-           // Open the ZIP file.
-           try (ZipFile zipFile = new ZipFile(zipFilePath)) {
-               Enumeration<? extends ZipEntry> entries = zipFile.entries();
-               
-               while (entries.hasMoreElements()) {
-                   ZipEntry entry = entries.nextElement();
-                   
-                   // Ensure the entry is a file, not a directory.
-                   if (!entry.isDirectory()) {
-                       // Extract the file to the extraction directory.
-                       File extractedFile = new File(extractionDir, entry.getName());
 
-                       // Ensure the parent directories exist.
-                       extractedFile.getParentFile().mkdirs();
-                       
+/* 
+* public static void main(String[] args) {
+* // Specify the path to the uploaded ZIP file.
+* String zipFilePath = "path_to_uploaded_zip_file.zip";
+* 
+* // Specify the directory where you want to extract the submissions.
+* String extractionDirectory = "extraction_directory";
+* 
+* // Call the method to process the submissions.
+* processSubmissions(zipFilePath, extractionDirectory);
+* }
+*/
+
+/*
+ * 
+ public String readFile(String zipFilePath, String specFolder, String extractionDirectory) {
+     try {
+         // Create a directory for extracting submissions.
+         File extractionDir = new File(extractionDirectory);
+         extractionDir.mkdirs();
+           
+         // Open the ZIP file.
+         try (ZipFile zipFile = new ZipFile(zipFilePath)) {
+             Enumeration<? extends ZipEntry> entries = zipFile.entries();
+             
+             while (entries.hasMoreElements()) {
+                 ZipEntry entry = entries.nextElement();
+                 
+                 // Ensure the entry is a file, not a directory.
+                 if (!entry.isDirectory()) {
+                     // Extract the file to the extraction directory.
+                     File extractedFile = new File(extractionDir, entry.getName());
+                     
+                     // Ensure the parent directories exist.
+                     extractedFile.getParentFile().mkdirs();
+                     
                        // Create an output stream to write the extracted file.
                        try (FileOutputStream outputStream = new FileOutputStream(extractedFile)) {
                            int bytesRead;
                            byte[] buffer = new byte[1024];
                            while ((bytesRead = zipFile.getInputStream(entry).read(buffer)) != -1) {
                                outputStream.write(buffer, 0, bytesRead);
-                           }
-                       }
-
-                       // Process the extracted file here.
-                       // You can add code to analyze Java files, evaluate them, and generate reports.
-                       // For simplicity, this example only extracts the files.
-                       
-                       // System.out.println("Extracted: " + extractedFile.getAbsolutePath());
-                   }
-               }
-           }
-       } catch (IOException e) {
-           e.printStackTrace();
-       }
-       return str;
-   }
-   */
+                            }
+                        }
+                        
+                        // Process the extracted file here.
+                        // You can add code to analyze Java files, evaluate them, and generate reports.
+                        // For simplicity, this example only extracts the files.
+                        
+                        // System.out.println("Extracted: " + extractedFile.getAbsolutePath());
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return str;
+    }
+}
+*/
 
 import java.util.Enumeration;
 import java.util.Scanner;
@@ -94,6 +97,9 @@ import org.apache.tika.parser.pdf.PDFParser;
 import org.apache.tika.parser.ParseContext;
 
 public class SubmissionReader implements FileReader {
+
+    String tempCode = "";
+    // String code = "";
     private String pdfText = "";
 
     public String readFile(String specFilePath, String specFolder, String specExtractionDirectory) {
@@ -127,9 +133,12 @@ public class SubmissionReader implements FileReader {
                         // Open and read the contents of the Java file
                         try (InputStream entryStream = zipFile.getInputStream(entry);
                                 BufferedReader reader = new BufferedReader(new InputStreamReader(entryStream))) {
+                            // String tempCode="";
                             String code;
                             while ((code = reader.readLine()) != null) {
-                                // System.out.println("Java file contents: " + code);
+                                // System.out.println("HERE");
+                                // code = code.concat(" " + tempCode);
+                                System.out.println("Java file contents: " + code);
                             }
                         }
                     } else {
@@ -145,6 +154,8 @@ public class SubmissionReader implements FileReader {
     }
 
     private static void processZippedFolder(InputStream zipInputStream) throws IOException {
+        FileWriter writer;
+        File java;
         try (ZipInputStream zis = new ZipInputStream(zipInputStream)) {
             ZipEntry subEntry;
             while ((subEntry = zis.getNextEntry()) != null) {
@@ -177,6 +188,10 @@ public class SubmissionReader implements FileReader {
                             baos.write(buffer, 0, len);
                         }
                         // System.out.println("Java file contents:" + baos.toString());
+                        // java = new File("JavaData.txt");
+                        // writer = new FileWriter(java.getName());
+                        // writer.write(baos.toString());
+                        // writer.close();
                     }
                 } else {
                     // Handle other file types or extensions if needed
