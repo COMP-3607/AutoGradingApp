@@ -145,10 +145,23 @@ public class TestJavaCreator extends TestObjectCreator {
     public String findAttributeType(String line) {
         String value = "";
         int loc = 0;
+        line = line.trim();
+        if (line.indexOf("private") != -1 || line.indexOf("public") != -1 || line.indexOf("protected") != -1) {
+            if (line.indexOf(';') != -1) {
+                while (loc < line.length()) {
+                    if (line.charAt(loc) == ' ') {
+                        loc++;
 
-        while (line.charAt(loc) != ' ') {
-            value = value.concat(Character.toString(line.charAt(loc)));
-            loc++;
+                        while (line.charAt(loc) != ' ') {
+                            value = value.concat(Character.toString(line.charAt(loc)));
+                            loc++;
+                        }
+                        return value;
+                    }
+
+                    loc++;
+                }
+            }
         }
 
         // return value;
