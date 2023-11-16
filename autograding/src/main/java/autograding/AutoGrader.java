@@ -1,7 +1,9 @@
 package autograding;
 
 import java.io.File;
+import java.util.ArrayList;
 
+import autograding.TestObjectFactory.TestObject;
 import autograding.DataReader.SpecReader;
 import autograding.DataReader.SubmissionReader;
 import autograding.TestObjectFactory.TestJavaCreator;
@@ -15,6 +17,8 @@ public class AutoGrader {
     private String subContent;
     private TestSpecCreator specMaker;
     private TestJavaCreator javaMaker;
+    private ArrayList<TestObject> specObjs = null;
+    private ArrayList<TestObject> javaObjs = null;
     String specDocumentName = "specDoc.txt";
     String javaTextDocument = "javaDoc.txt";
     File document;
@@ -36,8 +40,8 @@ public class AutoGrader {
         subContent = javaReader.readFile(specFilePath, specFolder, specExtractionDirectory);
         // System.out.println("Java Contents:\n"+ subContent);
 
-        specMaker.createTestObject(specDocumentName, document, specText);
-        javaMaker.createTestObject(javaTextDocument, document, subContent);
+        specObjs = specMaker.createTestObject(specDocumentName, document, specText);
+        javaObjs = javaMaker.createTestObject(javaTextDocument, document, subContent);
         return score;
     }
 }
