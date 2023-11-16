@@ -8,8 +8,8 @@ public abstract class TestObjectCreator {
     private TestObject object;
     private TestJavaCreator javaCreator;
     private TestSpecCreator specCreator;
-    private ArrayList<TestAttribute> attributes;
-    private ArrayList<TestMethod> methods;
+    private ArrayList<Attribute> attributes;
+    private ArrayList<Method> methods;
 
     public TestObjectCreator() {
 

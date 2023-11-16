@@ -84,8 +84,8 @@ public class TestJavaCreator extends TestObjectCreator {
     String tempMethod = "";
     String method = "";
     boolean openFound = false;
-    private TestAttribute attribute;
-    private ArrayList<TestAttribute> attributes = new ArrayList<TestAttribute>();
+    private Attribute attribute;
+    private ArrayList<Attribute> attributes = new ArrayList<Attribute>();
 
     public String findClassName(String line) {
         int index = 0;

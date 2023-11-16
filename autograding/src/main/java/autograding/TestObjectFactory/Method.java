@@ -2,15 +2,15 @@ package autograding.TestObjectFactory;
 
 import java.util.ArrayList;
 
-public class TestMethod {
+public class Method {
     private String name;
-    private ArrayList<TestAttribute> parameters;
+    private ArrayList<Attribute> parameters;
     private int marks;
     private String description;
     private String returnType;
     private String signature = "";
 
-    public TestMethod(String name, int marks, String description, String returnType) {
+    public Method(String name, int marks, String description, String returnType) {
         this.name = name;
         this.marks = marks;
         this.description = description;
@@ -18,13 +18,13 @@ public class TestMethod {
         this.parameters = new ArrayList<>();
     }
 
-    public TestMethod(String signature) {
+    public Method(String signature) {
         this.signature = signature;
     }
 
     // Add a parameter to the method
     public void addParameter(String name, String type) {
-        TestAttribute parameter = new TestAttribute(name, type);
+        Attribute parameter = new Attribute(name, type);
         parameters.add(parameter);
     }
 
@@ -40,7 +40,7 @@ public class TestMethod {
         return marks;
     }
 
-    public ArrayList<TestAttribute> getParameters() {
+    public ArrayList<Attribute> getParameters() {
         return parameters;
     }
 

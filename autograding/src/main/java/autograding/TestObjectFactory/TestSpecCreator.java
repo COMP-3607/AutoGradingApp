@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class TestSpecCreator extends TestObjectCreator {
-    private TestAttribute attribute = null;
-    private ArrayList<TestAttribute> attributes = new ArrayList<TestAttribute>();
-    private TestMethod method;
+    private Attribute attribute = null;
+    private ArrayList<Attribute> attributes = new ArrayList<Attribute>();
+    private Method method;
     private TestSpecObject specObject = null;
     private ArrayList<TestObject> specObjects = new ArrayList<TestObject>();
     private int count = 0;
@@ -182,7 +182,7 @@ public class TestSpecCreator extends TestObjectCreator {
                 signatures = findMethodSignatures(line);
                 if (signatures != "" && signal == false) {
                     // System.out.println("Signatures: " + signatures);
-                    method = new TestMethod(signatures);
+                    method = new Method(signatures);
                     SigLine = "";
                     signatures = "";
                     if (className != null) {
@@ -216,7 +216,7 @@ public class TestSpecCreator extends TestObjectCreator {
                                 // System.out.println("Mark is: " + mark);
                                 access = findAccessModifier(line, typelen);
                                 // System.out.println("Access is: " + access);
-                                attribute = new TestAttribute(varName, type, access, mark);
+                                attribute = new Attribute(varName, type, access, mark);
                                 attributes.add(attribute);
                             }
                         }

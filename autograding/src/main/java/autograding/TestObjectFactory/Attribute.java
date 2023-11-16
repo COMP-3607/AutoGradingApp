@@ -1,13 +1,13 @@
 package autograding.TestObjectFactory;
 
-public class TestAttribute {
+public class Attribute {
     private String name;
     private String type;
     private String description;
     private int marks;
 
     // Constructor for Class attributes
-    public TestAttribute(String name, String type, String description, int marks) {
+    public Attribute(String name, String type, String description, int marks) {
         this.name = name;
         this.type = type;
         this.description = description;
@@ -15,7 +15,7 @@ public class TestAttribute {
     }
 
     // Constructor for method parameters with no description and marks
-    public TestAttribute(String name, String type) {
+    public Attribute(String name, String type) {
         this.name = name;
         this.type = type;
         this.description = ""; // Set a default description as an empty string
