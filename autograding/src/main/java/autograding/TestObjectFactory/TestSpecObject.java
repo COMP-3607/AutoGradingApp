@@ -7,6 +7,10 @@ public class TestSpecObject implements TestObject {
     private ArrayList<Attribute> attributes;
     private Method methods;
 
+    public TestSpecObject() {
+
+    }
+
     public TestSpecObject(String className, ArrayList<Attribute> attributes, Method methods) {
         this.className = className;
         this.attributes = attributes;
@@ -17,9 +21,14 @@ public class TestSpecObject implements TestObject {
         // TestAttribute x;
         String line = "";
         for (Attribute x : attributes) {
-            line += x.getName();
+            line += x.getName() + " ";
         }
-        return className + " " + line + " " + methods.getSignature();
+        return "Classname is: " + className + " " + line + " " + methods.getSignature();
+    }
+
+    @Override
+    public TestObject createTestObject(String className, ArrayList<Attribute> attributes, Method methods) {
+        return new TestSpecObject(className, attributes, methods);
     }
 
 }

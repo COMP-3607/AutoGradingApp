@@ -21,4 +21,9 @@ public class TestJavaObject implements TestObject {
         }
         return className + " " + line + " " + methods.getSignature();
     }
+
+    @Override
+    public TestObject createTestObject(String className, ArrayList<Attribute> attributes, Method methods) {
+        return new TestJavaObject(className, attributes, methods);
+    }
 }

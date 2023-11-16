@@ -186,11 +186,13 @@ public class TestSpecCreator extends TestObjectCreator {
                     SigLine = "";
                     signatures = "";
                     if (className != null) {
+                        // specObject = (TestSpecObject) specObject.createTestObject(specText,
+                        // attributes, method);
                         specObject = new TestSpecObject(className, attributes, method);
                         specObjects.add(specObject);
                         // System.out.println("HEREEE");
                         // System.out.println(className);
-                        // System.out.println(specObject.toString());
+                        System.out.println(specObject.toString());
                     }
 
                     // System.out.println("=================================================================");
@@ -229,6 +231,7 @@ public class TestSpecCreator extends TestObjectCreator {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        // System.out.println(specObject.toString());
         return specObjects;
 
     }

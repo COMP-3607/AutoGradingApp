@@ -88,6 +88,9 @@ public class TestJavaCreator extends TestObjectCreator {
     boolean openFound = false;
     private Attribute attribute;
     private ArrayList<Attribute> attributes = new ArrayList<Attribute>();
+    private Method methodObj;
+    private TestJavaObject javaObject = null;
+    private ArrayList<TestObject> javaObjects = new ArrayList<TestObject>();
 
     public String findClassName(String line) {
         int index = 0;
@@ -232,32 +235,39 @@ public class TestJavaCreator extends TestObjectCreator {
                     // || (data.indexOf("extends") != -1 || data.indexOf("implements") != 1)) {
                     // System.out.println("HEREE");
                     className = findClassName(data);
-                    System.out.println(className);
+                    // System.out.println(className);
                 }
 
                 access = findAccessModifier(data, signal);
                 if (access != null) {
-                    System.out.println(access);
+                    // System.out.println(access);
                 }
 
                 type = findAttributeType(data);
                 if (type != null) {
-                    System.out.println(type);
+                    // System.out.println(type);
                 }
                 varName = findAttributeName(data);
                 if (varName != null) {
-                    System.out.println(varName);
+                    // System.out.println(varName);
                 }
+
+                attribute = new Attribute(className, type, access, -1);
+                attributes.add(attribute);
 
                 methodString = findMethod(data);
                 if (methodString != null) {
                     method = "";
                     // System.out.println(methodString);
-
+                    methodObj = new Method(methodString);
                 }
+                javaObject = new TestJavaObject(className, attributes, methodObj);
+                javaObjects.add(javaObject);
 
             }
+
             scanner.close();
+
         } catch (
 
         FileNotFoundException e) {
@@ -265,7 +275,7 @@ public class TestJavaCreator extends TestObjectCreator {
             e.printStackTrace();
         }
 
-        return null;
+        return javaObjects;
     }
 
     @Override
