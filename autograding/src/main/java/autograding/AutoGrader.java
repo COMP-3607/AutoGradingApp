@@ -4,16 +4,15 @@ import java.io.File;
 
 import autograding.DataReader.SpecReader;
 import autograding.DataReader.SubmissionReader;
-import autograding.TestObjectFactory.TestJavaCreator;
 import autograding.TestObjectFactory.TestSpecCreator;
+
 
 public class AutoGrader {
     private SpecReader specReader;
     private SubmissionReader javaReader;
     private double score;
     private String specText;
-    private String javaText;
-    private TestJavaCreator javaMaker;
+    private String subContent;
     private TestSpecCreator specMaker;
     String specDocumentName = "specDoc.txt";
     File document;
@@ -21,18 +20,19 @@ public class AutoGrader {
     public AutoGrader() {
         specReader = new SpecReader();
         specMaker = new TestSpecCreator();
-        javaMaker = new TestJavaCreator();
         javaReader = new SubmissionReader();
         score = 0;
     }
 
-    public double grader(String specFilePath, String specFolder, String specExtractionDirectory, String javaZipFilePath,
-            String javaExtractionDirectory) {
+    public double grader(String specFilePath, String specFolder, String specExtractionDirectory, String javaZipFilePath,String javaExtractionDirectory) {
+
         specText = specReader.readFile(specFilePath, specFolder, specExtractionDirectory);
-        javaText = javaReader.readFile(specFilePath, specFolder, javaExtractionDirectory);
-        // System.out.println(javaText);
+        System.out.println("PDF Contents::\n"+ specText);
+
+        subContent = javaReader.readFile(specFilePath, specFolder, specExtractionDirectory);
+        System.out.println("Java Contents:\n"+ subContent);
+        
         specMaker.createTestObject(specDocumentName, document, specText);
-        javaMaker.createTestObject(javaZipFilePath, document, javaExtractionDirectory);
         return score;
     }
 }
