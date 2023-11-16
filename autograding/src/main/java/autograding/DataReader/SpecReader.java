@@ -1,10 +1,7 @@
 package autograding.DataReader;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -14,8 +11,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 
 public class SpecReader implements FileReader {
-    private String pdfText = "";
-    private StringBuilder javaCode = new StringBuilder();
+    private StringBuilder pdfText = new StringBuilder();
 
     public String readFile(String specFilePath, String specFolder, String specExtractionDirectory) {
         try (ZipFile zipFile = new ZipFile(specFilePath)) {
@@ -26,87 +22,52 @@ public class SpecReader implements FileReader {
 
                 if (entry.isDirectory()) {
                     // Skip processing directories
-                    System.out.println("Folder found: " + entry.getName());
                     continue;
                 }
 
                 if (entry.getName().toLowerCase().endsWith(".zip")) {
-                    System.out.println("Zipped folder found: " + entry.getName());
                     processZippedFolder(zipFile.getInputStream(entry));
 
                 } else if (entry.getName().toLowerCase().endsWith(".pdf")) {
+                    processPdfEntry(zipFile.getInputStream(entry));
 
-                    System.out.println("PDF file found: " + entry.getName());
-                    try (InputStream entryStream = zipFile.getInputStream(entry);
-                            PDDocument document = PDDocument.load(entryStream)) {
-                        PDFTextStripper textStripper = new PDFTextStripper();
-                        pdfText += textStripper.getText(document);
-                    }
-                } else if (entry.getName().toLowerCase().endsWith(".java")) {
-                    System.out.println("Java file found: " + entry.getName());
-                    try (InputStream entryStream = zipFile.getInputStream(entry);
-                            BufferedReader reader = new BufferedReader(new InputStreamReader(entryStream))) {
-                        String code;
-                        while ((code = reader.readLine()) != null) {
-                            javaCode.append(code).append("\n");
-                        }
-                    }
-                } else {
+                } /*else {
                     System.out.println("Other file found: " + entry.getName());
-                }
+                }*/
             }
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(); 
         }
 
-        // Combine PDF and Java contents into a single string
-        StringBuilder result = new StringBuilder();
-        result.append("PDF Contents:\n").append(pdfText).append("\n\n");
-        result.append("Java Contents:\n").append(javaCode.toString());
-
-        System.out.println("TESTING....................................................\n" + result.toString());
-
-        return result.toString();
+        // Return PDF contents
+        return pdfText.toString();
     }
 
-    private void processZippedFolder(InputStream zipInputStream) throws IOException {
+    private void processZippedFolder(InputStream zipInputStream) {
         try (ZipInputStream zis = new ZipInputStream(zipInputStream)) {
             ZipEntry subEntry;
             while ((subEntry = zis.getNextEntry()) != null) {
                 if (subEntry.isDirectory()) {
-                    System.out.println("Folder found inside zipped folder: " + subEntry.getName());
+                    // Skip processing directories inside zipped folder
+                } else if (subEntry.getName().toLowerCase().endsWith(".zip")) {
+                    processZippedFolder(zis);
                 } else if (subEntry.getName().toLowerCase().endsWith(".pdf")) {
-                    System.out.println("PDF file found inside zipped folder: " + subEntry.getName());
-                    try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-                        byte[] buffer = new byte[1024];
-                        int len;
-                        while ((len = zis.read(buffer)) > 0) {
-                            baos.write(buffer, 0, len);
-                        }
-
-                        try (PDDocument document = PDDocument.load(baos.toByteArray())) {
-                            PDFTextStripper textStripper = new PDFTextStripper();
-                            String pdfText = textStripper.getText(document);
-                            System.out.println("Text in the PDF file:\n" + pdfText);
-                        }
-                    }
-                } else if (subEntry.getName().toLowerCase().endsWith(".java")) {
-                    System.out.println("Java file found inside zipped folder: " + subEntry.getName());
-                    try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-                        byte[] buffer = new byte[1024];
-                        int len;
-                        while ((len = zis.read(buffer)) > 0) {
-                            baos.write(buffer, 0, len);
-                        }
-                        // Append Java contents to the StringBuilder
-                        javaCode.append(baos.toString()).append("\n");
-                    }
+                    processPdfEntry(zis);
                 } else {
-                    System.out.println("Other file found inside zipped folder: " + subEntry.getName());
+                    //System.out.println("Other file found: " + subEntry.getName());
                 }
             }
+        } catch (IOException e) {
+            e.printStackTrace(); 
+        }
+    }
+
+    private void processPdfEntry(InputStream entryStream) {
+        try (PDDocument document = PDDocument.load(entryStream)) {
+            PDFTextStripper textStripper = new PDFTextStripper();
+            pdfText.append(textStripper.getText(document)).append("\n");
+        } catch (IOException e) {
+            e.printStackTrace(); 
         }
     }
 }
