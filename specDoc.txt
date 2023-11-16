@@ -1,3 +1,4 @@
+PDF Contents:
 COMP2603 Assignment 1
 
 Mark Scheme: 100 Marks
@@ -224,3 +225,372 @@ class, after which a cost is incurred.
 toString( ) String 1 Returns a String representation of the 
 Flight.
 COMP2603 Assignment 1	Marking Scheme	 	 	 	 	 	 	 	          Page  of 4 4
+
+
+Java Contents:
+import java.time.LocalDateTime;
+
+public class Flight {
+    //Declarations
+    private String flightNo;
+    private String destination;
+    private String origin;
+    private LocalDateTime flightDate;
+    private LuggageManifest manifest;
+
+    //constructor
+        public Flight(String flightNo, String destination, String origin, LocalDateTime flightDate) {
+            this.flightNo = flightNo;
+            this.destination = destination;
+            this.origin = origin;
+            this.flightDate = flightDate;
+            this.manifest = new LuggageManifest();
+        }
+
+    //accessors
+        public String getFlightNo() {
+            return this.flightNo;
+        }
+
+        public String getDestination() {
+            return this.destination;
+        }
+
+        public String getOrigin() {
+            return this.origin;
+        }
+
+        public LocalDateTime getFlightDate() {
+            return this.flightDate;
+        }
+
+        public LuggageManifest getManifest() {
+            return this.manifest;
+        }
+
+    //methods
+        public String checkInLuggage(Passenger p) {
+            int i = p.getNumLuggage();
+            Flight f = new Flight(this.flightNo, this.destination, this.origin, this.flightDate);
+            String s;
+                if (p.getFlightNo().equals(this.flightNo)) {
+                    if (i > 0) {
+                        
+                            while (i != 0) {
+                            this.manifest.addLuggage(p, f);
+                            i--;
+                            }
+                        s = "Your " + p.getNumLuggage() + " luggages have been checked in for flight " + this.getFlightNo();
+                        } else {
+                    
+                        s = "You have no luggages for flight " + this.getFlightNo();
+                        }
+                    } 
+                    else {
+                        
+                        s = "Invalid Flight";
+                }
+            return s;
+        }   
+
+        public String printLuggageManifest() {
+            return this.manifest.toString();
+        }
+
+        public int getAllowedLuggage(char cabinClass) {
+            int i = 0;
+                switch(cabinClass) {
+                    case '1':
+                        cabinClass = 'F';
+                        i = 3;
+                        break;
+
+                    case '2':
+                        cabinClass = 'B';
+                        i = 2;
+                        break;
+
+                    case '3':
+                        cabinClass = 'P';
+                        i = 1;
+                        break;
+
+                    case '4':
+                        cabinClass = 'E';
+                        i = 0;
+                        break;
+                }
+            return i;
+        }
+
+        public String toString() {
+            
+            return this.getFlightNo() + "  DESTINATION: " + this.getDestination() + " ORIGIN: " + this.getOrigin() + " " + 
+            this.getFlightDate();
+        }
+        
+}
+
+
+import java.time.LocalDateTime;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+import java.util.Arrays;
+import java.io.IOException;
+import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+public class LuggageManagementSystem{
+    public static void main(String [] args){
+        //declarations
+            LocalDateTime time = LocalDateTime.now();
+            String flightNo = "";
+            String destination = "";
+            String origin = "";
+            String passportNo = "";
+            String firstName = "";
+            String lastName = "";
+            String flightFile = "FlightList.txt";
+            String passengerFile = "PassengerList.txt";
+            LuggageManifest manifest = new LuggageManifest();
+
+            try {
+                List<String> flightLines = Files.readAllLines(Paths.get(flightFile));
+                List<String> passengerLines = Files.readAllLines(Paths.get(passengerFile));
+    
+                //**read flight data**
+                    for (String flightData : flightLines) {
+                        String[] fTemp = flightData.split(" ");
+                        flightNo = fTemp[0];
+                        destination = fTemp[1];
+                        origin = fTemp[2];
+                        Flight f = new Flight(flightNo, destination, origin, time);
+        
+                        //**read passenger data**
+                            for (String passengerData : passengerLines) {
+                                String[] pTemp = passengerData.split(" ");
+                                passportNo = pTemp[0];
+                                firstName = pTemp[1];
+                                lastName = pTemp[2];
+                                
+                                //**perform program**
+                                Passenger passenger = new Passenger(passportNo, firstName, lastName, flightNo);
+                                
+                                System.out.println(passenger);
+                                System.out.println(f.checkInLuggage(passenger));
+                                System.out.println(f.printLuggageManifest());
+                                System.out.println(manifest.addLuggage(passenger,f));
+                            }
+                            
+                    }
+                  
+                } catch (IOException e) {
+                    //**error checking**
+                    System.out.println("File not found: " + e.getMessage());
+            }
+                
+    }
+}
+import java.util.ArrayList;
+
+public class LuggageManifest {
+    // Declaration
+    private ArrayList<LuggageSlip> slips;
+    private Flight f;
+    
+    // constructor
+        public LuggageManifest() {
+        slips = new ArrayList<LuggageSlip>();
+        }
+
+    // accessors
+        public ArrayList<LuggageSlip> getSlips() {
+        return slips;
+        }
+
+    // method
+        public String addLuggage(Passenger p, Flight f) {
+            String s = "";
+                if (p.getFlightNo().equals(f.getFlightNo())) {
+                    String label;
+                    label = getExcessLuggageCostByPassenger(p.getPassportNumber());
+                        for (int i = 0; i < p.getNumLuggage(); i++) {
+                            if (i < 1) {
+                                LuggageSlip currentFirst = new LuggageSlip(p, f);
+                                slips.add(currentFirst);
+                            } else {
+                                LuggageSlip currentRest = new LuggageSlip(p, f, label);
+                                slips.add(currentRest);
+                            }
+                        }
+                    s = "Piece Added: (" + p.getNumLuggage() + "). Excess Cost:$" + label;
+
+                        if (p.getNumLuggage() == 0) {
+                            s = "No luggage to add.";
+                        }
+                    
+                } 
+                else {
+                        s = "Invalid Flight";
+                }
+            return s;
+        }
+
+        public String getExcessLuggageCostByPassenger(String passportNumber) {
+            int luggage = 0;
+            LuggageSlip passenger = null;
+            String money = "No Cost";
+            double cost = 0.0;
+    
+                for (LuggageSlip slip : slips) {
+                    if (slip.getOwner().getPassportNumber().equals(passportNumber)) {
+                        passenger = slip;
+                        luggage++;
+                    }
+                }
+    
+                if (passenger != null) {
+                    int numAllowedPieces = passenger.getOwner().getCabinClass();
+                        if (luggage > numAllowedPieces) {
+                            cost = getExcessLuggageCost(luggage, numAllowedPieces);
+                            money = "$" + cost;
+                        }
+                    
+                }
+    
+            return money;
+        }
+
+        public double getExcessLuggageCost(int numberPieces, int numAllowedPieces) {
+            int sum;
+            sum = numberPieces - numAllowedPieces;
+            sum = sum * 35;
+            return sum;
+        }
+
+        public String toString() {
+            String result = "\nLUGGAGE MANIFEST:\n";
+                for (LuggageSlip slip : this.slips) {
+                    result += slip.toString() + "\n";
+                }
+            return result;
+        }
+        
+}
+
+public class LuggageSlip{
+    //declarations
+    private Passenger owner;
+    private static int luggageSlipIDCounter;
+    private String luggageSlipID;
+    private String label;
+    
+    //constructor
+        public LuggageSlip(Passenger p, Flight f){
+            this.owner=p;
+            this.luggageSlipIDCounter=1;
+            this.luggageSlipID=f.getFlightNo() +"_"+this.owner.getLastName()+"_"+luggageSlipIDCounter;
+        }
+        
+        public LuggageSlip(Passenger p, Flight f, String label){
+            this.owner=p;
+            luggageSlipIDCounter++;
+            this.luggageSlipID=f.getFlightNo() +"_"+this.owner.getLastName()+"_"+luggageSlipIDCounter;
+            this.label=label;
+        }
+    
+    //accessors
+        public Passenger getOwner(){
+            return this.owner;
+        }
+        
+        public int getLuggageSlipIDCounter(){
+            return luggageSlipIDCounter;
+        }
+        
+        public String getLuggageSlipID(){
+            return this.luggageSlipID;
+        }
+        
+        public String getLabel(){
+            return this.label;
+        }
+        
+    //method
+        public boolean hasOwner(String passportNumber){
+            if(this.owner.getPassportNumber().equals(passportNumber)){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+    
+        public String toString(){
+            return this.getLuggageSlipID()+" "+this.getOwner().toString()+" $"+this.getLabel();
+        }
+}
+
+import java.util.Random;
+public class Passenger{
+    //Declarations
+    private String passportNumber;
+    private String flightNo;
+    private String firstName;
+    private String lastName;
+    private int numLuggage;
+    private char cabinClass;
+    private Random rand;
+    
+    //constructor
+        public Passenger(String passportNumber,String firstName, String lastName,String flightNo){
+        this.passportNumber=passportNumber;
+        this.firstName=firstName;
+        this.lastName=lastName;
+        this.flightNo=flightNo;
+        assignRandomCabinClass();
+        }
+    
+    //accessors
+        public String getPassportNumber(){
+        return this.passportNumber;
+        }
+    
+        public String getFirstName(){
+        return this.firstName;
+        }
+        
+        public String getLastName(){
+        return this.lastName;
+        }
+        
+        public String getFlightNo(){
+        return this.flightNo;
+        }
+        
+        public int getNumLuggage(){
+        return this.numLuggage;
+        }
+        
+        public char getCabinClass(){
+        return this.cabinClass;
+        }
+        
+    //methods
+        public void assignRandomCabinClass(){
+            char cabin[]={'F','B','P','E'};
+            int luggage[]={3,2,1,0};
+            int rc=new Random().nextInt(cabin.length);
+            int rl=new Random().nextInt(luggage.length);
+            this.cabinClass=cabin[rc];
+            this.numLuggage=luggage[rl];
+        }
+        
+        public String toString(){
+            return "PP NO. "+this.getPassportNumber()+" NAME: "+this.getFirstName().charAt(0) + "." + this.getLastName().toUpperCase() 
+                        + " NUMLUGGAGE: " +this.getNumLuggage()+" "+ " CLASS: " +this.getCabinClass();
+        }
+        
+}
+

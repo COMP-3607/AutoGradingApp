@@ -80,6 +80,7 @@ public class TestJavaCreator extends TestObjectCreator {
     private int closeCount = 0;
     private String className = "";
     private String access = "";
+    private String type = "";
     private boolean signal = false;
     String tempMethod = "";
     String method = "";
@@ -116,12 +117,7 @@ public class TestJavaCreator extends TestObjectCreator {
     public String findAccessModifier(String line, boolean signal) {
         int loc = 0;
         String value = "";
-        // if (signal == false) {
-        // return null;
-        // }
-        // if (signal == true) {
-        // System.out.println("HEREEE");
-        // while (line.charAt(loc) != ' ') {
+
         if (line.indexOf("private") != -1 || line.indexOf("public") != -1 || line.indexOf("protected") != -1) {
             if (line.indexOf('{') != -1) {
                 return null;
@@ -147,6 +143,15 @@ public class TestJavaCreator extends TestObjectCreator {
     }
 
     public String findAttributeType(String line) {
+        String value = "";
+        int loc = 0;
+
+        while (line.charAt(loc) != ' ') {
+            value = value.concat(Character.toString(line.charAt(loc)));
+            loc++;
+        }
+
+        // return value;
 
         return null;
     }
@@ -207,6 +212,11 @@ public class TestJavaCreator extends TestObjectCreator {
                 access = findAccessModifier(data, signal);
                 if (access != null) {
                     System.out.println(access);
+                }
+
+                type = findAttributeType(data);
+                if (type != null) {
+                    System.out.println("type is " + type);
                 }
 
                 methodString = findMethod(data);
