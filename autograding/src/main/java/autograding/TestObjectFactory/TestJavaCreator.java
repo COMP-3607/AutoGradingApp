@@ -81,6 +81,7 @@ public class TestJavaCreator extends TestObjectCreator {
     private String className = "";
     private String access = "";
     private String type = "";
+    private String varName = "";
     private boolean signal = false;
     String tempMethod = "";
     String method = "";
@@ -138,6 +139,23 @@ public class TestJavaCreator extends TestObjectCreator {
     }
 
     public String findAttributeName(String line) {
+        String value = "";
+        String str = "";
+        line = line.trim();
+        int loc = line.length();
+        loc = loc - 1;
+        if (line.indexOf("private") != -1 || line.indexOf("public") != -1 || line.indexOf("protected") != -1) {
+            if (line.indexOf(';') != -1) {
+                while (line.charAt(loc) != ' ') {
+                    value = value.concat(Character.toString(line.charAt(loc)));
+                    loc--;
+                }
+                for (int i = 0; i < value.length(); i++) {
+                    str = value.charAt(i) + str;
+                }
+                return str;
+            }
+        }
 
         return null;
     }
@@ -151,21 +169,16 @@ public class TestJavaCreator extends TestObjectCreator {
                 while (loc < line.length()) {
                     if (line.charAt(loc) == ' ') {
                         loc++;
-
                         while (line.charAt(loc) != ' ') {
                             value = value.concat(Character.toString(line.charAt(loc)));
                             loc++;
                         }
                         return value;
                     }
-
                     loc++;
                 }
             }
         }
-
-        // return value;
-
         return null;
     }
 
@@ -229,7 +242,11 @@ public class TestJavaCreator extends TestObjectCreator {
 
                 type = findAttributeType(data);
                 if (type != null) {
-                    System.out.println("type is " + type);
+                    System.out.println(type);
+                }
+                varName = findAttributeName(data);
+                if (varName != null) {
+                    System.out.println(varName);
                 }
 
                 methodString = findMethod(data);
