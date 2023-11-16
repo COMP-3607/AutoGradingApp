@@ -157,6 +157,8 @@ public class TestJavaCreator extends TestObjectCreator {
                 for (int i = 0; i < value.length(); i++) {
                     str = value.charAt(i) + str;
                 }
+                str = str.replace(';', ' ');
+                str = str.trim();
                 return str;
             }
         }
@@ -217,26 +219,19 @@ public class TestJavaCreator extends TestObjectCreator {
     }
 
     @Override
-    public ArrayList<TestObject> createTestObject(String documentName, File document, String specText) {
+    public ArrayList<TestObject> createTestObject(String documentName, File document, String javaText) {
         String methodString = "";
+        writeToFile(document = createTxtFile(documentName), javaText);
+
         try {
-            javaFile = new File("JavaData.txt");
-            writer = new FileWriter(javaFile);
-            writer.write(javaCode);
-            writer.close();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        try {
-            scanner = new Scanner(javaFile);
+            scanner = new Scanner(jFile);
             while (scanner.hasNextLine()) {
                 String data = scanner.nextLine();
                 if ((data.indexOf("class") != -1 && data.indexOf('{') != -1)) {
                     // || (data.indexOf("extends") != -1 || data.indexOf("implements") != 1)) {
                     // System.out.println("HEREE");
                     className = findClassName(data);
-                    // System.out.println(className);
+                    System.out.println(className);
                 }
 
                 access = findAccessModifier(data, signal);
@@ -261,9 +256,11 @@ public class TestJavaCreator extends TestObjectCreator {
                     method = "";
                     // System.out.println(methodString);
                     methodObj = new Method(methodString);
+                    javaObject = new TestJavaObject(className, attributes, methodObj);
+                    // System.out.println(javaObject.toString() + " ");
+                    javaObjects.add(javaObject);
+
                 }
-                javaObject = new TestJavaObject(className, attributes, methodObj);
-                javaObjects.add(javaObject);
 
             }
 
@@ -281,14 +278,20 @@ public class TestJavaCreator extends TestObjectCreator {
 
     @Override
     public File createTxtFile(String documentName) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createTxtFile'");
+        jFile = new File(documentName);
+        return jFile;
     }
 
     @Override
     public void writeToFile(File document, String javaText) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'writeToFile'");
+        try {
+            writer = new FileWriter(document.getName());
+            writer.write(javaText);
+            writer.close();
+        } catch (Exception e) {
+            // TODO: handle exception
+            System.out.println("Error: " + e.getMessage());
+        }
     }
 
     @Override
