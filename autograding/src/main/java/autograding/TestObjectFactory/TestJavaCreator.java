@@ -91,6 +91,7 @@ public class TestJavaCreator extends TestObjectCreator {
     private Method methodObj;
     private TestJavaObject javaObject = null;
     private ArrayList<TestObject> javaObjects = new ArrayList<TestObject>();
+    private File jFile;
 
     public String findClassName(String line) {
         int index = 0;
@@ -285,7 +286,7 @@ public class TestJavaCreator extends TestObjectCreator {
     }
 
     @Override
-    public void writeToFile(File document, String specText) {
+    public void writeToFile(File document, String javaText) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'writeToFile'");
     }
