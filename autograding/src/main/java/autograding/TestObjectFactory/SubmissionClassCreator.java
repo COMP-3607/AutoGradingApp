@@ -60,6 +60,7 @@ public class SubmissionClassCreator extends TextAnalyzer {
         String tempLine = "";
         String temp2;
         String tempMethodString = "";
+        ArrayList<String> methodList = new ArrayList<String>();
         String methodString = "";
         writeToFile(document = createTxtFile(documentName), javaText);
         try {
@@ -104,12 +105,14 @@ public class SubmissionClassCreator extends TextAnalyzer {
                 }
 
                 temp2 = findMethod(data);
+                // methodString = temp2;
                 if (temp2 != null) {
-                    tempMethodString = temp2;
+                    // tempMethodString = temp2;
                     // temp2.concat(temp2);
-                    // tempMethodString.concat(temp2 + " ");
-                    // methodString = temp2;
-                    // System.out.println(temp2);
+                    // methodString.concat(temp2);
+                    // System.out.println(methodString);
+
+                    methodList.add(temp2);
 
                     method = "";
                     // System.out.println("HEREE");
@@ -117,24 +120,36 @@ public class SubmissionClassCreator extends TextAnalyzer {
                     // javaObject = new Class(className, attributes, methodObj);
 
                     // System.out.println(javaObjects.toString() + " ");
-                    methodObj = new Method(tempMethodString);
-                    // System.out.println(methodObj.getSignature());
                     // methodString = "";
-                    if (methodObj.getSignature() != "") {
-                        javaObject = createTestObject(className, attributes, methodObj);
 
-                        // System.out.println(javaObject.toString());
-                    }
+                    // System.out.println("HERE");
+                    // System.out.println(methodObj.getSignature());
+
                 }
+
                 if (openCount == closeCount && openCount != 0 && closeCount != 0) {
                     openCount = 0;
                     closeCount = 0;
-                    if (javaObject != null) {
+                    methodString = "";
+                    for (String x : methodList) {
+                        tempMethodString = x;
+                        // methodString.concat(tempMethodString);
+                        methodString = methodString + tempMethodString;
+                    }
+                    // System.out.println("methods are: " + methodString);
+                    methodObj = new Method(methodString);
+
+                    if (methodObj.getSignature() != "") {
+                        javaObject = createTestObject(className, attributes, methodObj);
                         System.out.println(javaObject.toString());
+                    }
+                    methodList.clear();
+                    if (javaObject != null) {
+                        // System.out.println(javaObject.toString());
                         javaObjects.add(javaObject);
                     }
-
                 }
+
                 // if (temp != null && methodString != "") {
 
                 // }
