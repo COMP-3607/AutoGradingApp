@@ -141,7 +141,7 @@ public class SubmissionClassCreator extends TextAnalyzer {
 
                     if (methodObj.getSignature() != "") {
                         javaObject = createTestObject(className, attributes, methodObj);
-                        System.out.println(javaObject.toString());
+                        // System.out.println(javaObject.toString());
                     }
                     methodList.clear();
                     if (javaObject != null) {
@@ -150,19 +150,6 @@ public class SubmissionClassCreator extends TextAnalyzer {
                     }
                 }
 
-                // if (temp != null && methodString != "") {
-
-                // }
-                // tempLine=data.trim();
-
-                // if (data.trim().startsWith("}") && tempLine.indexOf('}') != -1) {
-
-                // }
-
-                // if (methodString != null && varName != null && type != null && access != null
-                // && className != null) {
-
-                // }
                 if (data.trim().startsWith("}")) {
                     tempLine = data.trim();
                 }
@@ -174,7 +161,7 @@ public class SubmissionClassCreator extends TextAnalyzer {
             e.printStackTrace();
         }
         // System.out.println("Size is :" + attributes.size());
-        System.out.println("Size is :" + javaObjects.size());
+        // System.out.println("Size is :" + javaObjects.size());
         return javaObjects;
     }
 
