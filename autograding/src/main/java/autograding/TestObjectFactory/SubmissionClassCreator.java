@@ -105,9 +105,10 @@ public class SubmissionClassCreator extends TextAnalyzer {
 
                 temp2 = findMethod(data);
                 if (temp2 != null) {
-                    // tempMethodString = temp2;
-                    temp2.concat(temp2);
-                    methodString = temp2;
+                    tempMethodString = temp2;
+                    // temp2.concat(temp2);
+                    // tempMethodString.concat(temp2 + " ");
+                    // methodString = temp2;
                     // System.out.println(temp2);
 
                     method = "";
@@ -116,17 +117,23 @@ public class SubmissionClassCreator extends TextAnalyzer {
                     // javaObject = new Class(className, attributes, methodObj);
 
                     // System.out.println(javaObjects.toString() + " ");
-                    methodObj = new Method(temp2);
+                    methodObj = new Method(tempMethodString);
                     // System.out.println(methodObj.getSignature());
                     // methodString = "";
-                    javaObject = createTestObject(className, attributes, methodObj);
-                    // System.out.println(javaObject.toString());
+                    if (methodObj.getSignature() != "") {
+                        javaObject = createTestObject(className, attributes, methodObj);
+
+                        // System.out.println(javaObject.toString());
+                    }
                 }
                 if (openCount == closeCount && openCount != 0 && closeCount != 0) {
                     openCount = 0;
                     closeCount = 0;
-                    System.out.println(javaObject.toString());
-                    javaObjects.add(javaObject);
+                    if (javaObject != null) {
+                        System.out.println(javaObject.toString());
+                        javaObjects.add(javaObject);
+                    }
+
                 }
                 // if (temp != null && methodString != "") {
 
