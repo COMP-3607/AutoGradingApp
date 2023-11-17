@@ -4,9 +4,6 @@ import autograding.DataReader.SpecReader;
 import autograding.DataReader.SubmissionReader;
 
 public class App {
-    public static SubmissionReader javaReader = new SubmissionReader();
-    public static SpecReader specReader = new SpecReader();
-
     public static void main(String[] args) {
 
         double score;
@@ -22,8 +19,5 @@ public class App {
         String specFolder = "autograding\\src\\main\\java\\autograding\\TestData.zip";
         score = autoGrader.grader(specFilePath, specFolder, specExtractionDirectory, javaZipFilePath,
                 javaExtractionDirectory);
-        // Call the method to process the submissions.
-        // specReader.readFile(specFilePath, specExtractionDirectory);
-        // javaReader.readFile(javaZipFilePath, javaExtractionDirectory);
     }
 }

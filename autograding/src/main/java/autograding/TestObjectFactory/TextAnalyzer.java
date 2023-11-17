@@ -3,25 +3,25 @@ package autograding.TestObjectFactory;
 import java.io.File;
 import java.util.ArrayList;
 
-public abstract class TestObjectCreator {
+public abstract class TextAnalyzer {
     private String specText;
-    private TestObject object;
-    private TestJavaCreator javaCreator;
-    private TestSpecCreator specCreator;
+    private CreateClass object;
+    private SubmissionClassCreator javaCreator;
+    private SchemeCreator specCreator;
     private ArrayList<Attribute> attributes;
     private ArrayList<Method> methods;
 
-    public TestObjectCreator() {
+    public TextAnalyzer() {
 
     }
 
-    public TestObjectCreator(String specText) {
+    public TextAnalyzer(String specText) {
         this.specText = specText;
     }
 
-    public ArrayList<TestObject> createTestObject(String documentName, File document, String specText) {
-        return null;
-    }
+    // Method for creating and returning an array list of Class or Scheme objects
+    // for testing
+    public abstract ArrayList<CreateClass> createTestObject(String documentName, File document, String specText);
 
     public abstract File createTxtFile(String documentName);
 
@@ -34,4 +34,7 @@ public abstract class TestObjectCreator {
     public abstract String findAttributeName(String line, int count);
 
     public abstract String findAttributeType(String line, int index);
+
+    public abstract CreateClass createTestObject(String className, ArrayList<Attribute> attributes, Method methods);
+
 }

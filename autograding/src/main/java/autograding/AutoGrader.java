@@ -3,11 +3,11 @@ package autograding;
 import java.io.File;
 import java.util.ArrayList;
 
-import autograding.TestObjectFactory.TestObject;
+import autograding.TestObjectFactory.CreateClass;
 import autograding.DataReader.SpecReader;
 import autograding.DataReader.SubmissionReader;
-import autograding.TestObjectFactory.TestJavaCreator;
-import autograding.TestObjectFactory.TestSpecCreator;
+import autograding.TestObjectFactory.SubmissionClassCreator;
+import autograding.TestObjectFactory.SchemeCreator;
 
 public class AutoGrader {
     private SpecReader specReader;
@@ -15,18 +15,18 @@ public class AutoGrader {
     private double score;
     private String specText;
     private String subContent;
-    private TestSpecCreator specMaker;
-    private TestJavaCreator javaMaker;
-    private ArrayList<TestObject> specObjs = null;
-    private ArrayList<TestObject> javaObjs = null;
-    String specDocumentName = "specDoc.txt";
-    String javaTextDocument = "javaDoc.txt";
-    File document;
+    private SchemeCreator specMaker;
+    private SubmissionClassCreator javaMaker;
+    private ArrayList<CreateClass> specObjs = null;
+    private ArrayList<CreateClass> javaObjs = null;
+    private String specDocumentName = "specDoc.txt";
+    private String javaTextDocument = "javaDoc.txt";
+    private File document;
 
     public AutoGrader() {
         specReader = new SpecReader();
-        javaMaker = new TestJavaCreator();
-        specMaker = new TestSpecCreator();
+        javaMaker = new SubmissionClassCreator();
+        specMaker = new SchemeCreator();
         javaReader = new SubmissionReader();
         score = 0;
     }

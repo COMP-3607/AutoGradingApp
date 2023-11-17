@@ -7,12 +7,12 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class TestSpecCreator extends TestObjectCreator {
+public class SchemeCreator extends TextAnalyzer {
     private Attribute attribute = null;
     private ArrayList<Attribute> attributes = new ArrayList<Attribute>();
     private Method method;
-    private TestSpecObject specObject = null;
-    private ArrayList<TestObject> specObjects = new ArrayList<TestObject>();
+    private CreateClass specObject = null;
+    private ArrayList<CreateClass> specObjects = new ArrayList<CreateClass>();
     private int count = 0;
     private int num;
     private int len;
@@ -35,7 +35,12 @@ public class TestSpecCreator extends TestObjectCreator {
     private boolean signal = false;
     private String signatures = "";
 
-    public TestSpecCreator() {
+    public SchemeCreator() {
+    }
+
+    @Override
+    public CreateClass createTestObject(String className, ArrayList<Attribute> attributes, Method methods) {
+        return new Scheme(className, attributes, methods);
     }
 
     public File createTxtFile(String documentName) {
@@ -72,7 +77,6 @@ public class TestSpecCreator extends TestObjectCreator {
                         }
                         num--;
                     }
-
                     className = "";
                     for (int i = 0; i < temp.length(); i++) {
                         className = temp.charAt(i) + className;
@@ -81,7 +85,6 @@ public class TestSpecCreator extends TestObjectCreator {
                     return className;
                 }
             }
-
         }
         return null;
     }
@@ -98,7 +101,6 @@ public class TestSpecCreator extends TestObjectCreator {
                 return "Public";
             }
         }
-
         return null;
     }
 
@@ -114,7 +116,6 @@ public class TestSpecCreator extends TestObjectCreator {
                 while (line.charAt(start) != ' ') {
                     temp2 = temp2.concat(Character.toString(line.charAt(start)));
                     start++;
-
                 }
                 return temp2;
             }
@@ -136,7 +137,6 @@ public class TestSpecCreator extends TestObjectCreator {
     }
 
     public int findAttributeMark(String line, int index) {
-        // System.out.println("HEY" + line.charAt(index));
         if (line.charAt(index) != ' ') {
             char tempNum = line.charAt(index);
             return Character.getNumericValue(tempNum);
@@ -151,7 +151,6 @@ public class TestSpecCreator extends TestObjectCreator {
             signal = false;
             return SigLine;
         }
-
         result = line.indexOf(" Signature");
         if (result != -1) {
             signal = true;
@@ -160,16 +159,14 @@ public class TestSpecCreator extends TestObjectCreator {
             tempSigLine = line;
             SigLine = SigLine.concat(" " + tempSigLine);
         }
-
         if (signal == false) {
             return "";
         }
         return "";
-
     }
 
     @Override
-    public ArrayList<TestObject> createTestObject(String documentName, File document, String specText) {
+    public ArrayList<CreateClass> createTestObject(String documentName, File document, String specText) {
         writeToFile(document = createTxtFile(documentName), specText);
         try {
             scanner = new Scanner(document);
@@ -177,8 +174,6 @@ public class TestSpecCreator extends TestObjectCreator {
                 count = 0;
                 line = scanner.nextLine();
                 len = line.length();
-                // ready = true;
-                // signatures = findMethodSignatures(line);
                 signatures = findMethodSignatures(line);
                 if (signatures != "" && signal == false) {
                     // System.out.println("Signatures: " + signatures);
@@ -188,16 +183,14 @@ public class TestSpecCreator extends TestObjectCreator {
                     if (className != null) {
                         // specObject = (TestSpecObject) specObject.createTestObject(specText,
                         // attributes, method);
-                        specObject = new TestSpecObject(className, attributes, method);
+                        // specObject = new Scheme(className, attributes, method);
+                        specObject = createTestObject(className, attributes, method);
                         specObjects.add(specObject);
                         // System.out.println("HEREEE");
                         // System.out.println(className);
-                        // System.out.println(specObject.toString());
+                        System.out.println(specObject.toString());
                     }
-
-                    // System.out.println("=================================================================");
                 }
-
                 while (count != len) {
                     tempClassName = findClassName(line, count);
                     if (tempClassName != null) {

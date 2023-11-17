@@ -2,33 +2,35 @@ package autograding.TestObjectFactory;
 
 import java.util.ArrayList;
 
-public class TestSpecObject implements TestObject {
+public class Scheme implements CreateClass {
     private String className;
     private ArrayList<Attribute> attributes;
     private Method methods;
 
-    public TestSpecObject() {
+    public Scheme() {
 
     }
 
-    public TestSpecObject(String className, ArrayList<Attribute> attributes, Method methods) {
+    public Scheme(String className, ArrayList<Attribute> attributes, Method methods) {
         this.className = className;
         this.attributes = attributes;
         this.methods = methods;
     }
 
     public String toString() {
-        // TestAttribute x;
         String line = "";
         for (Attribute x : attributes) {
             line += x.getName() + " ";
         }
         return "Classname is: " + className + " " + line + " " + methods.getSignature();
     }
-
-    @Override
-    public TestObject createTestObject(String className, ArrayList<Attribute> attributes, Method methods) {
-        return new TestSpecObject(className, attributes, methods);
-    }
+    /*
+     * 
+     * @Override
+     * public CreateClass createTestObject(String className, ArrayList<Attribute>
+     * attributes, Method methods) {
+     * return new Class(className, attributes, methods);
+     * }
+     */
 
 }
