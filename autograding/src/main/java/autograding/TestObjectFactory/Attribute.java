@@ -3,22 +3,29 @@ package autograding.TestObjectFactory;
 public class Attribute {
     private String name;
     private String type;
-    private String description;
+    private String accessModifier;
     private int marks;
 
     // Constructor for Class attributes
-    public Attribute(String name, String type, String description, int marks) {
+    public Attribute(String name, String type, String accessModifier, int marks) {
         this.name = name;
         this.type = type;
-        this.description = description;
+        this.accessModifier = accessModifier;
         this.marks = marks;
+    }
+
+    public Attribute(String name, String type, String accessModifier) {
+        this.name = name;
+        this.type = type;
+        this.accessModifier = accessModifier;
+
     }
 
     // Constructor for method parameters with no description and marks
     public Attribute(String name, String type) {
         this.name = name;
         this.type = type;
-        this.description = ""; // Set a default description as an empty string
+        this.accessModifier = ""; // Set a default description as an empty string
         this.marks = 0; // Set a default of 0 marks
     }
 
@@ -31,8 +38,8 @@ public class Attribute {
         return type;
     }
 
-    public String getDescription() {
-        return description;
+    public String getAccessModifier() {
+        return accessModifier;
     }
 
     public int getMarks() {

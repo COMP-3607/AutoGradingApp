@@ -37,19 +37,16 @@ public class SubmissionClassCreator extends TextAnalyzer {
             }
         }
         if (line.indexOf('}') != -1 && line.indexOf(';') == -1) {
-            // System.out.println("HEREEEE");
             openFound = false;
             return method;
         }
         if (openFound == true) {
             tempMethod = line;
             if (tempMethod.indexOf(';') != -1) {
-                // System.out.println("HEREEEE");
                 tempMethod = tempMethod.replace(';', ' ');
             }
             tempMethod = tempMethod.trim();
             method = method.concat(" " + tempMethod);
-            // System.out.println("method is : " + method);
         }
         return null;
     }
@@ -62,106 +59,83 @@ public class SubmissionClassCreator extends TextAnalyzer {
         String tempMethodString = "";
         ArrayList<String> methodList = new ArrayList<String>();
         String methodString = "";
+
+        // Method call to create and write submitted java code to a text document
         writeToFile(document = createTxtFile(documentName), javaText);
         try {
             scanner = new Scanner(jFile);
             while (scanner.hasNextLine()) {
                 String data = scanner.nextLine();
-
+                // Condition to increment a counter
                 if (data.indexOf('{') != -1) {
                     openCount++;
-                    // System.out.println(" { " + openCount);
                 }
+                // Condition to increment a counter
                 if (data.indexOf('}') != -1) {
                     closeCount++;
-                    // System.out.println(" } " + closeCount);
                 }
+                // Condition for method call to find a class name on a line if present
                 if ((data.indexOf("class") != -1 && data.indexOf('{') != -1)) {
-                    // || (data.indexOf("extends") != -1 || data.indexOf("implements") != 1)) {
-                    // System.out.println("HEREE");
                     className = findClassName(data, 0);
-                    System.out.println(className);
                 }
+                // Method call to find an attribute's access modifier on a line if present
                 temp = findAccessModifier(data, 0);
                 if (temp != null) {
                     access = temp;
-                    // System.out.println(access);
+                    // Method call to find an attribute's type on a line if present
                     temp = findAttributeType(data, 0);
-
                     if (temp != null) {
                         type = temp;
-                        // System.out.println(type);
                     }
+                    // Method call to find an attribute's name on a line if present
                     temp = findAttributeName(data, 0);
                     if (temp != null) {
                         varName = temp;
-                        // System.out.println(varName);
                     }
+                    // Condition for creating Attribute objects for each class object
                     if (varName != null && type != null && access != null) {
-                        // System.out.println(varName + " " + type + " " + access);
-                        attribute = new Attribute(varName, type, access, -1);
+                        attribute = new Attribute(varName, type, access);
                         attributes.add(attribute);
                     }
                 }
-
+                // Method call to find a method of a class and add it to an arrayList
                 temp2 = findMethod(data);
-                // methodString = temp2;
                 if (temp2 != null) {
-                    // tempMethodString = temp2;
-                    // temp2.concat(temp2);
-                    // methodString.concat(temp2);
-                    // System.out.println(methodString);
-
                     methodList.add(temp2);
-
                     method = "";
-                    // System.out.println("HEREE");
-                    // temp2 = "";
-                    // javaObject = new Class(className, attributes, methodObj);
-
-                    // System.out.println(javaObjects.toString() + " ");
-                    // methodString = "";
-
-                    // System.out.println("HERE");
-                    // System.out.println(methodObj.getSignature());
-
                 }
 
+                // Condition to find the end of a class
                 if (openCount == closeCount && openCount != 0 && closeCount != 0) {
                     openCount = 0;
                     closeCount = 0;
                     methodString = "";
+                    // merge all methods in arraylist into one string
                     for (String x : methodList) {
                         tempMethodString = x;
-                        // methodString.concat(tempMethodString);
                         methodString = methodString + tempMethodString;
                     }
-                    // System.out.println("methods are: " + methodString);
+                    // create method object for a class
                     methodObj = new Method(methodString);
-
                     if (methodObj.getSignature() != "") {
+                        // Method call to crete a java submission object for testing
                         javaObject = createTestObject(className, attributes, methodObj);
-                        // System.out.println(javaObject.toString());
                     }
                     methodList.clear();
+                    // condition for adding java objects to an arrayList
                     if (javaObject != null) {
-                        // System.out.println(javaObject.toString());
                         javaObjects.add(javaObject);
                     }
                 }
-
                 if (data.trim().startsWith("}")) {
                     tempLine = data.trim();
                 }
-
             }
             scanner.close();
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        // System.out.println("Size is :" + attributes.size());
-        // System.out.println("Size is :" + javaObjects.size());
         return javaObjects;
     }
 
@@ -199,7 +173,6 @@ public class SubmissionClassCreator extends TextAnalyzer {
                 }
                 while (line.charAt(index) != ' ' && line.charAt(index) != '{') {
                     value = value.concat(Character.toString(line.charAt(index)));
-                    // System.out.println(value);
                     index++;
                 }
                 return value;

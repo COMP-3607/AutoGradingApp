@@ -62,7 +62,6 @@ public class SchemeCreator extends TextAnalyzer {
     public String findClassName(String line, int count) {
         int x = count + 1;
         if (line.charAt(count) == 'C' && line.charAt(x) == 'l') {
-            // System.out.println("HEREEEEEEE");
             num = count - 1;
             if (num != -1) {
                 if (line.charAt(num) == ' ') {
@@ -81,7 +80,6 @@ public class SchemeCreator extends TextAnalyzer {
                     for (int i = 0; i < temp.length(); i++) {
                         className = temp.charAt(i) + className;
                     }
-                    // System.out.println("Class Name: " + className);
                     return className;
                 }
             }
@@ -111,7 +109,6 @@ public class SchemeCreator extends TextAnalyzer {
             if ((line.charAt(count) == 'P' && line.charAt(x) == 'r' && line.charAt(xx) == 'i')
                     || (line.charAt(count) == 'P' && line.charAt(x) == 'u' && line.charAt(xx) == 'b')) {
                 int start = 0;
-                // System.out.println(line);
                 temp2 = "";
                 while (line.charAt(start) != ' ') {
                     temp2 = temp2.concat(Character.toString(line.charAt(start)));
@@ -176,41 +173,29 @@ public class SchemeCreator extends TextAnalyzer {
                 len = line.length();
                 signatures = findMethodSignatures(line);
                 if (signatures != "" && signal == false) {
-                    // System.out.println("Signatures: " + signatures);
                     method = new Method(signatures);
                     SigLine = "";
                     signatures = "";
                     if (className != null) {
-                        // specObject = (TestSpecObject) specObject.createTestObject(specText,
-                        // attributes, method);
-                        // specObject = new Scheme(className, attributes, method);
                         specObject = createTestObject(className, attributes, method);
                         specObjects.add(specObject);
-                        // System.out.println("HEREEE");
-                        // System.out.println(className);
-                        System.out.println(specObject.toString());
                     }
                 }
                 while (count != len) {
                     tempClassName = findClassName(line, count);
                     if (tempClassName != null) {
                         className = tempClassName;
-                        // System.out.println("Class Name: " + className);
                     }
                     varName = findAttributeName(line, count);
                     if (varName != null) {
-                        // System.out.println("Attribute is: " + varName);
                         attributeLen = varName.length();
                         type = findAttributeType(line, attributeLen);
                         if (type != null) {
-                            // System.out.println("Attribute type is: " + type);
                             typelen = type.length();
                             typelen = typelen + 2 + attributeLen;
                             mark = findAttributeMark(line, typelen);
                             if (mark != -1) {
-                                // System.out.println("Mark is: " + mark);
                                 access = findAccessModifier(line, typelen);
-                                // System.out.println("Access is: " + access);
                                 attribute = new Attribute(varName, type, access, mark);
                                 attributes.add(attribute);
                             }
@@ -224,8 +209,6 @@ public class SchemeCreator extends TextAnalyzer {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        // System.out.println(specObject.toString());
         return specObjects;
-
     }
 }

@@ -13,6 +13,18 @@ public class Class implements CreateClass {
         this.methods = methods;
     }
 
+    public String getClassName() {
+        return this.className;
+    }
+
+    public ArrayList<Attribute> getAttributes() {
+        return this.attributes;
+    }
+
+    public Method getMethod() {
+        return this.methods;
+    }
+
     public String toString() {
         String line = "";
         for (Attribute x : attributes) {
@@ -20,12 +32,5 @@ public class Class implements CreateClass {
         }
         return "Classname is: " + className + " " + line + " " + methods.getSignature();
     }
-    /*
-     * 
-     * @Override
-     * public CreateClass createTestObject(String className, ArrayList<Attribute>
-     * attributes, Method methods) {
-     * return new Class(className, attributes, methods);
-     * }
-     */
+
 }
