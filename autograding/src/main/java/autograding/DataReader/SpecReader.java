@@ -31,12 +31,14 @@ public class SpecReader implements FileReader {
                 } else if (entry.getName().toLowerCase().endsWith(".pdf")) {
                     processPdfEntry(zipFile.getInputStream(entry));
 
-                } /*else {
-                    System.out.println("Other file found: " + entry.getName());
-                }*/
+                } /*
+                   * else {
+                   * System.out.println("Other file found: " + entry.getName());
+                   * }
+                   */
             }
         } catch (IOException e) {
-            e.printStackTrace(); 
+            e.printStackTrace();
         }
 
         // Return PDF contents
@@ -53,12 +55,14 @@ public class SpecReader implements FileReader {
                     processZippedFolder(zis);
                 } else if (subEntry.getName().toLowerCase().endsWith(".pdf")) {
                     processPdfEntry(zis);
-                } else {
-                    //System.out.println("Other file found: " + subEntry.getName());
-                }
+                } /*
+                   * else {
+                   * //System.out.println("Other file found: " + subEntry.getName());
+                   * }
+                   */
             }
         } catch (IOException e) {
-            e.printStackTrace(); 
+            e.printStackTrace();
         }
     }
 
@@ -67,7 +71,7 @@ public class SpecReader implements FileReader {
             PDFTextStripper textStripper = new PDFTextStripper();
             pdfText.append(textStripper.getText(document)).append("\n");
         } catch (IOException e) {
-            e.printStackTrace(); 
+            e.printStackTrace();
         }
     }
 }
