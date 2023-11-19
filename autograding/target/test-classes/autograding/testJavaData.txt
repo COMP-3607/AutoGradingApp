@@ -1,0 +1,14 @@
+public class Fish{
+    private String colour="Pink";
+    private String fishName="Salmon";
+
+    public String getColour(){
+        return this.colour;
+    }
+    public String getName(){
+        return this.fishName;
+    }
+    public String toString(){
+        return getName() + " is " + getColour();
+    }
+}
